@@ -1,0 +1,30 @@
+package br.ufrgs.inf.jlggross.documentclustering;
+
+import br.ufrgs.inf.jlggross.clustering.DataFeature;
+import br.ufrgs.inf.jlggross.clustering.DataObject;
+
+public class Document extends DataObject {
+	private String title;
+	private String content;
+	
+	public Document(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
+	
+	public String getTitle() {
+		return this.title;
+	}
+	
+	public String getContent() {
+		return this.content;
+	}
+	
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		for (DataFeature feature : this.featureCollection) {
+			str.append(feature.toString()).append("\n");
+		}
+		return str.toString();
+	}
+}
