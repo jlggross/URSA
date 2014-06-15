@@ -19,7 +19,7 @@ import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClusteringStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.FuzzyMeansSimilarityStrategy;
 
@@ -56,11 +56,11 @@ public class DocumentClustering {
 		
 			// -------------------------------------------------------------------------------
 			
-			// K-means
+			// K-medoids
 			int k = 2; // Number of clusters
 			int iterations = 2; // Number of iterations
-			KmeansTest(filenames[i], process, similarityMatrix, k, iterations, 1);
-			KmeansTest(filenames[i], process, similarityMatrix, k, iterations, 2);
+			KmedoidsTest(filenames[i], process, similarityMatrix, k, iterations, 1);
+			KmedoidsTest(filenames[i], process, similarityMatrix, k, iterations, 2);
 			
 			// DBSCAN
 			double epsilon = 0.2;
@@ -110,11 +110,11 @@ public class DocumentClustering {
 	/**
 	 * Test K-means clustering strategy algorithm
 	 */
-	private static void KmeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
+	private static void KmedoidsTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			int k, int iterations, int centroidStrategy) {		
 		
 		// Set and run K-Means Clustering Strategy		
-		process.setClusteringStrategy(new KmeansClusteringStrategy(k, iterations, centroidStrategy));
+		process.setClusteringStrategy(new KmedoidsClusteringStrategy(k, iterations, centroidStrategy));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 		
 		// Write clusters on file
