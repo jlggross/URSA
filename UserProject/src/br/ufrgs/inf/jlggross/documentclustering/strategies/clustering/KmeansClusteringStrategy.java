@@ -27,12 +27,9 @@ import java.util.Collections;
  */
 
 public class KmeansClusteringStrategy extends ClusteringStrategy {
-	private int centroidsNum;
-	private int iterations;
-	private int centroidStrategy;
-	private double MIN_VALUE = -9999.00;
-	private int INFINITE = 9999;
-	
+	private int numCentroids;
+	private int numObjects;
+	private int iterations;	
 	
 	/**
 	 * Definition: K-Means Constructor.
@@ -44,14 +41,9 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	 * @param centroidStrategy : select the strategy to choose the new centroid at the end of each
 	 * iteration.
 	 */
-	public KmeansClusteringStrategy(int k, int iterations, int centroidStrategy) {
-		this.centroidsNum = k;
+	public KmeansClusteringStrategy(int k, int iterations) {
+		this.numCentroids = k;
 		this.iterations = iterations;
-		
-		if (centroidStrategy != 1 && centroidStrategy != 2)
-			throw new RuntimeException("K-means: centroidStrategy must be 1 or 2.");
-		
-		this.centroidStrategy = centroidStrategy;
 	}
 	
 	
@@ -63,141 +55,140 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	 */
 	@Override
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
-		int totalDocs = dataObjects.size();
+		this.numObjects = dataObjects.size();
 		
-		if (totalDocs < this.centroidsNum) {
+		if (this.numObjects < this.numCentroids) {
 			throw new RuntimeException("K should be equals or smaller than the number of objects.");
 		}
-		
-		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
-		List<Integer> centroidsIndex = new ArrayList<Integer>(); // stores the position of each centroid in 'dataObjects' as file OBJ0, OBJ1, ...
-		
+
 		// Choose centroids
-		centroidsIndex = this.chooseCentroidsSPSS(this.centroidsNum, centroidsIndex, similarityMatrix);
-		for (int i = 0; i < centroidsIndex.size(); i++) {
-			// Add new cluster
-			DataCluster cluster = new DataCluster("Cluster" + i);
-			cluster.addDataObject(dataObjects.get(centroidsIndex.get(i)));
-			dataClusters.add(cluster);
+		// centroidsIndex : stores the position of each centroid in 'dataObjects' as file OBJ0, OBJ1, ...
+		List<Integer> centroidsIndex = new ArrayList<Integer>(); 
+		centroidsIndex = this.chooseCentroidsSPSS(this.numCentroids, centroidsIndex, similarityMatrix);
+		
+		// Create matrix for the centroids	
+		double[][] centroidsMatrix = new double[this.numCentroids][this.numObjects];
+		for (int i = 0; i < this.numCentroids; i++) {
+			int centroidIndex = centroidsIndex.get(i);
+			
+			// Copy similarities
+			for (int j = 0; j < this.numObjects; j++) {
+				if (centroidIndex == j)
+					centroidsMatrix[i][j] = 0;
+				else
+					centroidsMatrix[i][j] = similarityMatrix.get(centroidIndex, j);
+			}
+			
+			// For the zero values calculate a mean, based on the similarities between the obj with 
+			// zero similarity and the others objs.
+			double sum = 0;
+			for (int j = 0; j < this.numObjects; j++) {
+				sum += centroidsMatrix[i][j];
+			}
+			sum = sum / this.numObjects;
+			centroidsMatrix[i][centroidIndex] = sum;
+		}
+		
+		
+		// print
+		for (int i = 0; i < this.numCentroids; i++) {
+			System.out.printf("Centroid %d: ", i);
+			for (int j = 0; j < this.numObjects; j++) {
+				System.out.printf("%6.2f", centroidsMatrix[i][j]);
+			}
+			System.out.printf("\n");
 		}
 		
 		// Check @param iterations 
 		int numIterations;
 		if (this.iterations == -1)
-			numIterations = INFINITE;
+			numIterations = Integer.MAX_VALUE;
 		else 
 			numIterations = this.iterations;
 		
-		// K-means core execution
+		// Iterate K-means until convergence
 		for (int it = 0; it < numIterations; it++) {
 			
-			// Cluster each dataObject to the nearest centroids.
-			for (int i = 0; i < dataObjects.size(); i++) {
-				DataObject d = dataObjects.get(i);
+			// Update similarities
+			for (int i = 0; i < this.numCentroids; i++) {
+				// Get mean similarity in the cluster
+				double mean = getMeanSimilarity(centroidsMatrix[i]);
+				double diff = getDiffMeanSimilarity(centroidsMatrix[i], mean);
 				
-				// Tests if the dataObject is a centroid 
-				if (centroidsIndex.contains(i))
-					continue;
-				else {
-					int currentCentroidIndex = -1; 
-					double currentSimilarity = MIN_VALUE;
-					
-					// Search the highest similarity between d and all the centroids
-					// There are 'centroidsNum' centroids
-					for (int j = 0; j < this.centroidsNum; j++) {
-						int centroidIndex = centroidsIndex.get(j);  
-						double newSimilarity = similarityMatrix.get(i, centroidIndex);
-						if (newSimilarity > currentSimilarity) {
-							currentSimilarity = newSimilarity;
-							currentCentroidIndex = centroidIndex;
-						}
-					}
-					
-					// Get cluster index in list 'clusters' and select the cluster
-					int clusterListIndex = centroidsIndex.indexOf(currentCentroidIndex);
-					DataCluster currentDataCluster = dataClusters.get(clusterListIndex);
-					
-					// Add the dataObject d to the corresponding cluster
-					currentDataCluster.addDataObject(d);
-					
-					// Remove cluster and centroidIndex from their corresponding lists and add again both,
-					// so they have the same index, each one in its list
-					dataClusters.remove(clusterListIndex);
-					centroidsIndex.remove(clusterListIndex);
-					dataClusters.add(currentDataCluster);
-					centroidsIndex.add(currentCentroidIndex);
+				for (int j = 0; j < this.numObjects; j++) {
+					if( (centroidsMatrix[i][j] - mean) > 0 )
+						centroidsMatrix[i][j] = centroidsMatrix[i][j] - centroidsMatrix[i][j] * diff;
+					else
+						centroidsMatrix[i][j] = centroidsMatrix[i][j] + centroidsMatrix[i][j] * diff;
 				}
-			} 
+			}	
 			
-			// Check if the last iteration has been reached
-			if (it == (this.iterations - 1))
-				break; 
-			
-			// Calculate new centroids. So first, clear the current centroids
-			List<DataCluster> oldClusters = new ArrayList<DataCluster>(dataClusters);
-			List<Integer> oldCentroids = new ArrayList<Integer>(centroidsIndex);
-			dataClusters.clear();
-			centroidsIndex.clear();
-			
-			for (int i = 0; i < this.centroidsNum; i++) {
-				// Get a cluster and its list of data objects
-				DataCluster currentDataCluster = oldClusters.get(i);
-				List<DataObject> currentDataClusterContent = currentDataCluster.getDataObjects();
-				
-				// List to store the index of each dataObject from the cluster
-				List<Integer> dataClusterContentIndexes = new ArrayList<Integer>();
-				
-				// Extract the indexes from the dataObjects of the cluster
-				for (int j = 0; j < currentDataClusterContent.size(); j++) {
-					DataObject currentDataObject = currentDataClusterContent.get(j);
-					dataClusterContentIndexes.add(dataObjects.indexOf(currentDataObject));
-				}
-								
-				// New centroid is selected
-				int currentIndexCentroid = 0;
-				if (this.centroidStrategy == 1)
-					currentIndexCentroid = this.getNewCentroidStrategy1(dataClusterContentIndexes, similarityMatrix);
-				else if (this.centroidStrategy == 2)
-					currentIndexCentroid = this.getNewCentroidStrategy2(dataClusterContentIndexes, similarityMatrix);
-				centroidsIndex.add(currentIndexCentroid);
-				
-				// Add new cluster
-				DataCluster cluster = new DataCluster();
-				cluster.addDataObject(dataObjects.get(currentIndexCentroid));
-				dataClusters.add(cluster);
-			}
-			
-			// Check if the centroids are still the same. If yes, then stop, because 
-			// no changes occurred in two iterations.
-			boolean stop = true;
-			if (it == 0) { // First iteration
-				stop = false;
-				continue;
-			}
-			else { // From the second iteration and on
-				for (int c : centroidsIndex) {
-					if (oldCentroids.contains(c))
-						continue;
-					else {
-						stop = false;
-						break;
-					}
+			// Test convergence
+		}
+		
+		// Construct the clusters
+		return buildClusters(centroidsMatrix, dataObjects, centroidsIndex);
+	}
+
+	
+	private double getDiffMeanSimilarity(double[] centroidRow, double mean) {
+		double diff = 0.0;
+		for (int i = 0; i < this.numObjects; i++) {
+			diff += Math.abs(centroidRow[i] - mean);
+		}
+		
+		return (diff / this.numObjects);
+	}
+	
+	
+	private double getMeanSimilarity(double[] centroidRow) {
+		double mean = 0.0;
+		for (int i = 0; i < this.numObjects; i++) {
+			mean += centroidRow[i];
+		}
+		
+		return (mean / this.numObjects);
+	}
+	
+	
+	private List<DataCluster> buildClusters(double[][] centroidsMatrix, List<DataObject> dataObjects, List<Integer> centroidsIndex) {
+		// Create clusters
+		DataCluster[] clusters = new DataCluster[this.numCentroids];
+		for (int i = 0; i < this.numCentroids; i++) {
+			clusters[i] = new DataCluster();
+		}
+		
+		// Populate clusters
+		for (int i = 0; i < this.numObjects; i++) {
+			double current = -1;
+			double max = -1;
+			int cluster = -1;
+			for (int j = 0; j < this.numCentroids; j++) {
+				current = centroidsMatrix[j][i];
+				if (current > max) {
+					max = current;
+					cluster = j;
 				}
 			}
-			if (stop)
-				break;
 			
-			// Check @param iterations
-			if (this.iterations == -1)
-				it = 1; // 1 just to be different from 0. If 'iterations' is -1, then we run the algorithm until convergence 
+			DataObject d = dataObjects.get(i);
+			clusters[cluster].addDataObject(d);
+		}
+		
+		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
+		for (int i = 0; i < this.numCentroids; i++) {
+			dataClusters.add(clusters[i]);
 		}
 		
 		return dataClusters;
 	}
-
+	
+	
 	
 	/**
 	 * Definition: Choose centroids using Single Pass Seed Selection (SPSS) Algorithm.
+	 * 
+	 * INSERT SPSS ALGORITHM HERE
 	 * 
 	 * @param k : number of centroids.
 	 * @param centroidsIndex : the indexes of the centroids.
@@ -206,10 +197,9 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	private List<Integer> chooseCentroidsSPSS(int k, List<Integer> centroidsIndex, Matrix2D similarityMatrix) {
 		// 2. Create list of distances
 		List<Double> similaritySum = new ArrayList<Double>();
-		int size = similarityMatrix.getWidth();
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < this.numObjects; i++) {
 			double sum = 0;
-			for (int j = 0; j < size; j++) {
+			for (int j = 0; j < this.numObjects; j++) {
 				if (i == j) 
 					continue;
 				sum += similarityMatrix.get(i,j); 
@@ -218,9 +208,9 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 		}
 		
 		// 3. Find max value in similaritySum
-		double maxSimSum = this.MIN_VALUE;
+		double maxSimSum = Double.MIN_VALUE;
 		int maxSimSumIndex = -1;
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < this.numObjects; i++) {
 			double sum = similaritySum.get(i);
 			if (sum > maxSimSum) {
 				maxSimSum = sum;
@@ -235,13 +225,13 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 			// 5. Set distances list
 			ArrayList<Pair> similarityDistances = new ArrayList<Pair>();
 			//List<Double> similarityDistances = new ArrayList<Double>(); //non-ordered list
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < this.numObjects; i++) {
 				// Exclude centroids
 				if (centroidsIndex.contains(i))
 					continue;
 				
 				// Populate list
-				double maxSim = this.MIN_VALUE;
+				double maxSim = Double.MIN_VALUE;;
 				for (int j = 0; j < centroidsIndex.size(); j++) {
 					int centroidIndex = centroidsIndex.get(j);
 					if (similarityMatrix.get(i, centroidIndex) > maxSim) {
@@ -255,7 +245,7 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	        Collections.sort(similarityDistances, new Pair.PairSimilarityComparator());
 	        
 			double y = 0;
-			for (int i = 0; i < (size/k); i++)
+			for (int i = 0; i < (this.numObjects/k); i++)
 				y += similarityDistances.get(i).getSimilarity();
 			
 			// 7-8. Find next centroid
@@ -283,102 +273,5 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 		return centroidsIndex;
 	}
 	
-	
-	/**
-	 * Definition: First strategy to choose the new centroid. Given the objects of the cluster,
-	 * chooses the new centroid.
-	 * 1) Calculate the overall mean similarity of the cluster.
-	 * 2) Calculate the mean similarity of each object.
-	 * 3) Choose the centroid that has its mean similarity closest to the overall mean similarity.
-	 * 
-	 *  @param dataClusterContentIndexes : list with the index of each dataObject from a cluster.
-	 *  @param similarityMatrix : similarity matrix with the similarity between every pair of objects.
-	 */
-	private int getNewCentroidStrategy1(List<Integer> dataClusterContentIndexes, Matrix2D similarityMatrix) {
-		
-		double meanOverallSimilarity = 0;
-		int meanOverallSimilarityCount = 0;
-		List<Double> meanSimilarities = new ArrayList<Double>();
-		double currentMeanSimilarity;
-		
-		int x, y;
-		int size = dataClusterContentIndexes.size();
-		for (int j = 0; j < size; j++) {
-			x = dataClusterContentIndexes.get(j);
-			currentMeanSimilarity = 0;
-			for (int k = 0; k < size; k++) {
-				y = dataClusterContentIndexes.get(k);
-				
-				if (x != y) {
-					currentMeanSimilarity += similarityMatrix.get(x, y);
-				}
-				
-				if (x > y) {
-					meanOverallSimilarity += similarityMatrix.get(x, y); 
-					meanOverallSimilarityCount++;
-				}
-			}
-			
-			currentMeanSimilarity /= (size - 1);
-			meanSimilarities.add(currentMeanSimilarity);
-		}
-		
-		meanOverallSimilarity /= meanOverallSimilarityCount;
-		
-		// Choose the object with the closest mean similarity of the overallMeanSimilarity 
-		int currentIndexCentroid = dataClusterContentIndexes.get(0); // Get the first object  
-		double diff1, diff2;
-		diff2 = Math.abs(meanOverallSimilarity - meanSimilarities.get(0));
-		for (int j = 0; j < size; j++) {
-			diff1 = Math.abs(meanOverallSimilarity - meanSimilarities.get(j));
-			if(diff1 > diff2)
-				currentIndexCentroid = dataClusterContentIndexes.get(j);
-		}
-		
-		return currentIndexCentroid;
-	}
-	
-	
-	/**
-	 * Definition: Second strategy to choose the new centroid. Given the objects of the cluster,
-	 * chooses the new centroid.
-	 * 1) Calculate the mean similarity of an object from the cluster with all the others.
-	 * 2) Do this for each object.
-	 * 3) The object with the highest mean similarity in the cluster is the new centroid.
-	 * 
-	 *  @param dataClusterContentIndexes : list with the index of each dataObject from a cluster.
-	 *  @param similarityMatrix : similarity matrix with the similarity between every pair of objects.
-	 */
-	private int getNewCentroidStrategy2(List<Integer> dataClusterContentIndexes, Matrix2D similarityMatrix) {
-		double currentMeanSimilarity = MIN_VALUE;
-		int currentIndexCentroid = -1;
-		
-		int size = dataClusterContentIndexes.size();
-		if (size == 1)
-			return dataClusterContentIndexes.get(0);	
-			
-		for (int j = 0; j < size; j++) {
-			double meanSimilarity = 0;
-			int x, y;
-			x = dataClusterContentIndexes.get(j);
-			for (int k = 0; k < size; k++) {
-				y = dataClusterContentIndexes.get(k);
-				if (x != y)
-					meanSimilarity += similarityMatrix.get(x, y);
-			}
-			
-			// Get the meanSimilarity for the size-1 similarities
-			// size-1, because the similarityMatrix.get(j, j) is not computed
-			meanSimilarity = meanSimilarity / (size - 1);
-			
-			// Tests if the new meanSimilarity is the highest so far
-			if (meanSimilarity > currentMeanSimilarity) {
-				currentMeanSimilarity = meanSimilarity;
-				currentIndexCentroid = x;
-			}
-		}
-		
-		return currentIndexCentroid;
-	}
 	
 }
