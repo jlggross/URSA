@@ -19,6 +19,7 @@ import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.FuzzyCMeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
@@ -73,6 +74,11 @@ public class DocumentClustering {
 			int minObjs = 2; // Minimum number of objects per cluster
 			DBSCANTest(filenames[i], process, similarityMatrix, epsilon, minObjs);
 			
+			// Fuzzy C-Means
+			double fuzziness = 2.0; // Normally  the fuzziness is set to 2.0
+			k = 2; iterations = 2;
+			FuzzyCMeansTest(filenames[i], process, similarityMatrix, fuzziness, k, iterations);
+			
 			// BestStar
 			double GSM = 0.5;
 			BestStarTest(filenames[i], process, similarityMatrix, GSM);
@@ -80,6 +86,23 @@ public class DocumentClustering {
 			// -------------------------------------------------------------------------------
 		}
 	}
+	
+	
+	/**
+	 * Test BestStar clustering strategy algorithm
+	 */
+	private static void FuzzyCMeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
+			double fuzziness, int numClusters, int iterations) {
+		
+		// Set and run K-Means Clustering Strategy 
+		process.setClusteringStrategy(new FuzzyCMeansClusteringStrategy(fuzziness, numClusters, iterations));
+		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
+				
+		// Write clusters on file
+		String strategy = "FuzzyCMeans";
+		writeCluster(process, strategy, filename);
+	}
+	
 	
 	/**
 	 * Test BestStar clustering strategy algorithm
@@ -117,10 +140,10 @@ public class DocumentClustering {
 	 * Test K-medoids clustering strategy algorithm
 	 */
 	private static void KmedoidsTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
-			int k, int iterations, int centroidStrategy) {		
+			int numClusters, int iterations, int centroidStrategy) {		
 		
 		// Set and run K-Means Clustering Strategy		
-		process.setClusteringStrategy(new KmedoidsClusteringStrategy(k, iterations, centroidStrategy));
+		process.setClusteringStrategy(new KmedoidsClusteringStrategy(numClusters, iterations, centroidStrategy));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 		
 		// Write clusters on file
@@ -138,10 +161,10 @@ public class DocumentClustering {
 	 * Test K-means clustering strategy algorithm
 	 */
 	private static void KmeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
-			int k, int iterations) {		
+			int numClusters, int iterations) {		
 		
 		// Set and run K-Means Clustering Strategy		
-		process.setClusteringStrategy(new KmeansClusteringStrategy(k, iterations));
+		process.setClusteringStrategy(new KmeansClusteringStrategy(numClusters, iterations));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 		
 		String strategy = "Kmeans";
