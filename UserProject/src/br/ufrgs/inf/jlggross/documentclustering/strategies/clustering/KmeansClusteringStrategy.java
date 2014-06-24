@@ -131,6 +131,14 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	}
 
 	
+	/**
+	 * Definition: Calculates the difference between the similarities in @param centroidRow,
+	 * then add these differences and calculate the mean of the differences.
+	 * 
+	 * @param centroidRow : stores the similarities of each object with the centroid it
+	 * represents.
+	 * @param mean : the mean of the similarities in @param centroidRow  
+	 */
 	private double getDiffMeanSimilarity(double[] centroidRow, double mean) {
 		double diff = 0.0;
 		for (int i = 0; i < this.numObjects; i++) {
@@ -141,6 +149,13 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	}
 	
 	
+	/**
+	 * Definition: Calculates the mean of similarities of the objects with a 
+	 * given centroid. 
+	 * 
+	 * @param centroidRow : stores the similarities of each object with the centroid it
+	 * represents.
+	 */
 	private double getMeanSimilarity(double[] centroidRow) {
 		double mean = 0.0;
 		for (int i = 0; i < this.numObjects; i++) {
@@ -151,6 +166,17 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	}
 	
 	
+	/**
+	 * Definition: Build the list of clusters based in the results of the
+	 * K-means algorithm. This list is required for other steps in the
+	 * application.  
+	 * 
+	 * @param centroidsMatrix : each line of the matrix corresponds to one centroid.
+	 * Each column corresponds to an object. The value stored in (line, column)
+	 * corresponds to the similarity between the object and the given centroid.
+	 * @param dataObjects : list of data objects.
+	 * @param centroidsIndex :
+	 */
 	private List<DataCluster> buildClusters(double[][] centroidsMatrix, List<DataObject> dataObjects, List<Integer> centroidsIndex) {
 		// Create clusters
 		DataCluster[] clusters = new DataCluster[this.numCentroids];
@@ -188,7 +214,18 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	/**
 	 * Definition: Choose centroids using Single Pass Seed Selection (SPSS) Algorithm.
 	 * 
-	 * INSERT SPSS ALGORITHM HERE
+	 * SPSS Algorithm: 
+	 * 1. Calculate similarity matrix
+	 * 2. Find sumv, which is a vector of distances where the i position
+	 * correspond to the sum of the similarities of the ith object with all
+	 * the other objects.
+	 * 3. Find the max value of sumv.
+	 * 4. Add first centroid (the one with the maximum value in sumv) to C.   
+	 * 5. For each point xi, set D(xi) to be the highest similarity of xi
+	 * to a centroid in C.
+	 * 6. Find y as the sum of similarities of the first n/k highest similarities
+	 * in D.
+	 * 7-8. Described in the code.
 	 * 
 	 * @param k : number of centroids.
 	 * @param centroidsIndex : the indexes of the centroids.
@@ -224,14 +261,14 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 		do {
 			// 5. Set distances list
 			ArrayList<Pair> similarityDistances = new ArrayList<Pair>();
-			//List<Double> similarityDistances = new ArrayList<Double>(); //non-ordered list
+		
 			for (int i = 0; i < this.numObjects; i++) {
 				// Exclude centroids
 				if (centroidsIndex.contains(i))
 					continue;
 				
 				// Populate list
-				double maxSim = Double.MIN_VALUE;;
+				double maxSim = Double.MIN_VALUE;
 				for (int j = 0; j < centroidsIndex.size(); j++) {
 					int centroidIndex = centroidsIndex.get(j);
 					if (similarityMatrix.get(i, centroidIndex) > maxSim) {
@@ -245,7 +282,8 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	        Collections.sort(similarityDistances, new Pair.PairSimilarityComparator());
 	        
 			double y = 0;
-			for (int i = 0; i < (this.numObjects/k); i++)
+			//for (int i = 0; i < this.numObjects/k; i++)
+			for (int i = (this.numObjects/k - 1); i >=0 ; i--)
 				y += similarityDistances.get(i).getSimilarity();
 			
 			// 7-8. Find next centroid
@@ -264,8 +302,8 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 							similarityDistances.get(i).getIndex());
 					break;
 				}
-				if (i == similarityDistances.size()) {
-					throw new RuntimeException("Kmeans class, function chooseCentroidsSPSS : No cntroid was selected");
+				if (i == (similarityDistances.size() - 1)) {
+					throw new RuntimeException("Kmeans class, function chooseCentroidsSPSS : No centroid was selected");
 				}
 			}
 		} while (centroidsIndex.size() < k);

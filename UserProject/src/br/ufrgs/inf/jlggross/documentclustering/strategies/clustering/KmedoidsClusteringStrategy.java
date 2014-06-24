@@ -23,7 +23,6 @@ import java.util.Collections;
  * 4) Repeat 2) and 3) for a number i of iterations. (all non-centroid elements have no groups at this
  * point)
  * 
- * ss
  * -----------------------------------------------------------------------------------------------
  */
 
@@ -36,7 +35,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	
 	
 	/**
-	 * Definition: K-Means Constructor.
+	 * Definition: K-Medoids Constructor.
 	 * 
 	 * @param k : number of groups.
 	 * @param iterations : number of iterations. Run the algorithm for the n iterations or until
@@ -57,7 +56,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	
 	
 	/**
-	 * Definition: K-Means core algorithm execution.
+	 * Definition: K-Medoids core algorithm execution.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  

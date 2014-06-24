@@ -19,6 +19,7 @@ import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.FuzzyMeansSimilarityStrategy;
@@ -61,7 +62,12 @@ public class DocumentClustering {
 			int iterations = 2; // Number of iterations
 			KmedoidsTest(filenames[i], process, similarityMatrix, k, iterations, 1);
 			KmedoidsTest(filenames[i], process, similarityMatrix, k, iterations, 2);
-			
+
+			// K-means
+			k = 2; // Number of clusters
+			iterations = 2; // Number of iterations
+			KmeansTest(filenames[i], process, similarityMatrix, k, iterations);
+		
 			// DBSCAN
 			double epsilon = 0.2;
 			int minObjs = 2; // Minimum number of objects per cluster
@@ -108,7 +114,7 @@ public class DocumentClustering {
 	
 	
 	/**
-	 * Test K-means clustering strategy algorithm
+	 * Test K-medoids clustering strategy algorithm
 	 */
 	private static void KmedoidsTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			int k, int iterations, int centroidStrategy) {		
@@ -120,10 +126,25 @@ public class DocumentClustering {
 		// Write clusters on file
 		String strategy = "";
 		if (centroidStrategy == 1)
-			strategy = "Kmeans-CentroidStrategy1";
+			strategy = "Kmedoids-CentroidStrategy1";
 		else if (centroidStrategy == 2)
-			strategy = "Kmeans-CentroidStrategy2";
+			strategy = "Kmedoids-CentroidStrategy2";
 			
+		writeCluster(process, strategy, filename);
+	}
+	
+	
+	/**
+	 * Test K-means clustering strategy algorithm
+	 */
+	private static void KmeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
+			int k, int iterations) {		
+		
+		// Set and run K-Means Clustering Strategy		
+		process.setClusteringStrategy(new KmeansClusteringStrategy(k, iterations));
+		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
+		
+		String strategy = "Kmeans";
 		writeCluster(process, strategy, filename);
 	}
 	
