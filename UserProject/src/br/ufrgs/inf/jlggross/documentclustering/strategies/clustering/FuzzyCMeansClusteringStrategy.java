@@ -2,6 +2,7 @@ package br.ufrgs.inf.jlggross.documentclustering.strategies.clustering;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
@@ -29,17 +30,57 @@ import br.ufrgs.inf.jlggross.clustering.strategy.ClusteringStrategy;
 
 public class FuzzyCMeansClusteringStrategy extends ClusteringStrategy {
 	
+	double fuzziness;
+	int numClusters;
+	int iterations;
+	
 	/**
+	 * Definition: Fuzzy C-Means Constructor.
+	 * 
+	 * @param fuzziness : determines the level of cluster fuzziness. A large m 
+	 * results in smaller memberships uij and hence, fuzzier clusters. Must be
+	 * a value equal or higher than 1. [1, +infinite)
+	 * @param numClusters : the number of clusters.
+	 * @param iterations : the number of iterations for the clustering algorithm. 
 	 * */
-	public FuzzyCMeansClusteringStrategy() {
-		
+	public FuzzyCMeansClusteringStrategy(double fuzziness, int numClusters, int iterations) {
+		this.fuzziness = fuzziness;
+		this.numClusters = numClusters;
+		this.iterations = iterations;
 	}
 	
 	
 	/**
-	 * */
+	 * Definition: K-Means core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
+	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
-		List<DataCluster> dataClusters = new ArrayList<DataCluster>();		
+		
+		// 1. Create membership matriz
+		double[][] membership = new double[dataObjects.size()][this.numClusters];
+		
+		// 1.1 Initialize membership matrix
+		Random r = new Random();
+		int dataSize = dataObjects.size();
+		for (int i = 0; i < this.numClusters; i++) {
+			for (int j = 0; j < dataSize; j++) {
+				membership[j][i] = r.nextDouble();
+			}
+		}
+		
+		int it = 0;
+		do {
+			
+			// 2. Calculate centroids
+			
+			
+			it++;
+			// TODO - add convergence test
+		} while (it < this.iterations);
+		
+		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		return dataClusters;
 	}
 
