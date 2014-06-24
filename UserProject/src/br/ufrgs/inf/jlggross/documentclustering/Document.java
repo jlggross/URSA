@@ -7,9 +7,10 @@ public class Document extends DataObject {
 	private String title;
 	private String content;
 	
-	public Document(String title, String content) {
+	public Document(String title, String content, int index) {
 		this.title = title;
 		this.content = content;
+		this.index = index;
 	}
 	
 	public String getTitle() {

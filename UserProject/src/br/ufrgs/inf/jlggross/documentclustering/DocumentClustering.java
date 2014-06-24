@@ -46,7 +46,7 @@ public class DocumentClustering {
 			// Create DataObjects
 			int size = dataSetSizes[i];
 			for (int j = 0; j < size; j++) { 	
-				doc = new Document("OBJ" + j + ".txt", "");
+				doc = new Document("OBJ" + j + ".txt", "", j);
 				process.addDataObject(doc);
 				System.out.println("Added dataObject: " + doc.getTitle());
 			}
@@ -242,6 +242,7 @@ public class DocumentClustering {
 			//File docFolder = new File("data/reuters-extracted");
 			//File docFolder = new File("data/wikipedia");
 			File docFolder = new File("data/teste1-beststar");
+			int index = 0;
 			for (File doc : docFolder.listFiles()) {
 				BufferedReader reader = new BufferedReader(new FileReader(doc));
 				String line = "";
@@ -249,7 +250,10 @@ public class DocumentClustering {
 				while (null != (line = reader.readLine())) {
 					content.append(line);
 				}
-				process.addDataObject(new Document(doc.toString(), content.toString()));
+				
+				process.addDataObject(new Document(doc.toString(), content.toString(), index));
+				index++;
+				
 				System.out.println("DataObject added: " + doc.toString());
 				reader.close();
 			}

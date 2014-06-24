@@ -5,6 +5,7 @@ import java.util.List;
 
 public abstract class DataObject {
 	protected List<DataFeature> featureCollection;
+	protected int index;
 	
 	public DataObject() {
 		this.clearFeatureList();
@@ -20,6 +21,14 @@ public abstract class DataObject {
 	
 	public void clearFeatureList() {
 		this.featureCollection = new ArrayList<DataFeature>();
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
+	public int getIndex() {
+		return this.index;
 	}
 	
 	public abstract String toString();

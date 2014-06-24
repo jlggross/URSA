@@ -31,6 +31,10 @@ public class DataCluster {
 	public List<DataObject> getDataObjects() {
 		return this.dataObjects;
 	}
+	
+	public DataObject getObject(int index) {
+		return this.dataObjects.get(index);
+	}
 
 	public void print() {
 		System.out.println("Cluster:");
