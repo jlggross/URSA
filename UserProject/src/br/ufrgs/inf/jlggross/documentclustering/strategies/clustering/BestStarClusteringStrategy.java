@@ -8,136 +8,119 @@ import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.clustering.strategy.ClusteringStrategy;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * Best Star Algorithm:
+ * 1. The first object will be in the first cluster. The first object of a cluster is 
+ * always its center. 
+ * 2. From the second object, assigns the object to the cluster with the highest similarity. If 
+ * the object is not assigned to any cluster, then creates its own.
+ * 3. The non-center objects automatically are assigned to the clusters where they have the highest
+ * similarity with its center. 
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class BestStarClusteringStrategy extends ClusteringStrategy {
 	private double threshold;
 	
+	/**
+	 * Definition: Best Star Constructor
+	 * 
+	 * @param threshold : indicates the minimum similarity that an
+	 * object need to be part of a cluster.
+	 */
 	public BestStarClusteringStrategy(double threshold) {
 		this.threshold = threshold;
 	}
-	
-	// For each object, tries to make a new cluster:
-	//	If the object is not allocated, create a new cluster and add whoever should be there;
-	//	Else, tries to create a new cluster with it but deletes the new cluster in case no other object is added to it.
-	
-	@Override
+		
+	/**
+	 * Definition: Best Star core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
+	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
-		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
-		List<DataObject> allocatedObjects = new ArrayList<DataObject>();
-		List<DataObject> centerObjects = new ArrayList<DataObject>();
 		
-		// For each object...
-		int totalDocs = dataObjects.size();
-		for (int i = 0; i < totalDocs; i++) {
-			DataObject currentObject = dataObjects.get(i);
+		// Auxiliar variables
+		int dataSize = dataObjects.size();
+		int numClusters = 0;
+		
+		DataCluster[] clusters = new DataCluster[dataSize];
+		List<Integer> centers = new ArrayList<Integer>(); // store the indexes of the centers
+		
+		// 1. Creates first cluster
+		{ 
+			for (int i = 0; i < dataSize; i++)
+				clusters[i] = new DataCluster();
 			
-			if (!allocatedObjects.contains(currentObject)) {
-				// The current object is not allocated yet, so starts a new cluster.
-				DataCluster star = new DataCluster();
-				star.addDataObject(currentObject);
-				allocatedObjects.add(currentObject);
-				centerObjects.add(currentObject);
-				
-				// For each other object, checks the similarity between them (except centers!).
-				for (int j = i+1; j < totalDocs; j++) {
-					DataObject anotherObject = dataObjects.get(j);
-					if (!centerObjects.contains(anotherObject)) {
-						double similarity = similarityMatrix.get(i, j);
-						if (similarity >= this.threshold) {
-							if (!allocatedObjects.contains(anotherObject)) {
-								// The object is not allocated yet - add it to this cluster.
-								allocatedObjects.add(anotherObject);
-								star.addDataObject(anotherObject);
-							} else {
-								// The object is already allocated - moves it if similarity is higher.
-								DataCluster anotherCluster = this.getClusterOfObject(dataClusters, anotherObject);
-								DataObject center = anotherCluster.getDataObjects().get(0);
-								int centerIndex = dataObjects.indexOf(center);
-								if (similarity > similarityMatrix.get(j, centerIndex)) {
-									anotherCluster.getDataObjects().remove(anotherObject);
-									star.addDataObject(anotherObject);
-								}
-							}
-						}
-					}
-				}
-				dataClusters.add(star);
-			} else {
-				// The object is already allocated but tries to create a new cluster with it.
-				DataCluster star = new DataCluster();
-				star.addDataObject(currentObject);
-				centerObjects.add(currentObject);
-				
-				// Gets similarity on the original cluster.
-				DataCluster previousCluster = this.getClusterOfObject(dataClusters, currentObject);
-				DataObject previousCenter = previousCluster.getDataObjects().get(0);
-				int previousCenterIndex = dataObjects.indexOf(previousCenter);
-				double previousSimilarity = similarityMatrix.get(i, previousCenterIndex);
-				
-				boolean validCluster = false;
-				
-				// For each other object, checks the similarity between them (except centers!).
-				for (int j = i+1; j < totalDocs; j++) {
-					DataObject anotherObject = dataObjects.get(j);
-					if (!centerObjects.contains(anotherObject)) {
-						double similarity = similarityMatrix.get(i, j);
-						if (similarity > previousSimilarity) {
-							if (!allocatedObjects.contains(anotherObject)) {
-								// The object is not allocated yet - add it to this cluster.
-								allocatedObjects.add(anotherObject);
-								star.addDataObject(anotherObject);
-								validCluster = true;
-							} else {
-								// The object is already allocated - moves it if similarity is higher.
-								DataCluster anotherCluster = this.getClusterOfObject(dataClusters, anotherObject);
-								DataObject center = anotherCluster.getDataObjects().get(0);
-								int centerIndex = dataObjects.indexOf(center);
-								if (similarity > similarityMatrix.get(j, centerIndex)) {
-									anotherCluster.getDataObjects().remove(anotherObject);
-									star.addDataObject(anotherObject);
-									validCluster = true;
-								}
-							}
-						}
-					}
-				}
-				
-				// If cluster had only the center object, remove it and leave the object on the original cluster.
-				if (validCluster) {
-					previousCluster.getDataObjects().remove(currentObject);
-					dataClusters.add(star);
-				} else {
-					centerObjects.remove(currentObject);
-				}
-			}
-			//this.setProgress((double)i/totalDocs);
+			DataCluster c = new DataCluster();
+			c.addDataObject(dataObjects.get(0));
+			clusters[0] = c;
+			
+			// The first center if the object with index 0 : OBJ0
+			centers.add(0);  
+			numClusters++;
 		}
 		
-		/*
-		// Remove clusters of one document.
-		List<DataCluster> realClusters = new ArrayList<DataCluster>();
-		for (DataCluster cluster : dataClusters) {
-			if (cluster.getDataObjects().size() > 1) {
-				realClusters.add(cluster);
+		// 2. Create the other clusters
+		for (int i = 1; i < dataSize; i++) {
+			
+			// Check the need for a new cluster
+			boolean createNewCluster = true;
+			for (int j = 0; j < numClusters; j++) {
+				
+				// The first object of a cluster will always be its center
+				DataObject d = clusters[i].getObject(0); 
+				
+				// If true, then the ith object can be assigned to a cluster, no need for new cluster 
+				if (similarityMatrix.get(d.getIndex(), i) >= this.threshold) {
+					createNewCluster = false;
+					break;
+				}
 			}
+			
+			// If true, then the ith object could not be assigned to any cluster : need for a new cluster
+			if (createNewCluster) {
+				DataCluster c = new DataCluster();
+				c.addDataObject(dataObjects.get(i));
+				clusters[numClusters] = c;
+				
+				centers.add(i);
+				numClusters++;
+			}			
+		}
+				
+		// 3. Populate clusters
+		for (int i = 0; i < dataSize; i++) {
+			
+			// If true, then the ith object is a center
+			if (centers.contains(i))
+				continue;
+			
+			int index = -1;
+			double max = Double.MIN_VALUE;
+			double sim;
+			for(int j = 0; j < numClusters; j++) {
+				DataObject d = clusters[j].getObject(0);
+				sim = similarityMatrix.get(d.getIndex(), i);
+				
+				if (sim > max) {
+					max = sim;
+					index = j;
+				}
+			}
+			
+			// Add object to cluster
+			clusters[index].addDataObject(dataObjects.get(i));
 		}
 		
-		return realClusters;
-		*/
+		// 4. Build DataClusters
+		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
+		for (int i = 0; i < numClusters; i++) {
+			dataClusters.add(clusters[i]);		
+		}
 		
 		return dataClusters;
 	}
-	
-	private DataCluster getClusterOfObject(List<DataCluster> dataClusters, DataObject object) {
-		DataCluster clusterOfObject = null;
-		
-		for (DataCluster cluster : dataClusters) {
-			if (cluster.getDataObjects().contains(object)) {
-				clusterOfObject = cluster;
-				break;
-			}
-		}
-		
-		return clusterOfObject;
-	}
-
 }
