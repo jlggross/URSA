@@ -71,12 +71,12 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 			for (int j = 0; j < numClusters; j++) {
 				
 				// The first object of a cluster will always be its center
-				DataObject d = clusters[i].getObject(0); 
+				DataObject d = clusters[j].getObject(0); 
 				
 				// If true, then the ith object can be assigned to a cluster, no need for new cluster 
 				if (similarityMatrix.get(d.getIndex(), i) >= this.threshold) {
 					createNewCluster = false;
-					break;
+					break; 
 				}
 			}
 			

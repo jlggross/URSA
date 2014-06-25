@@ -46,7 +46,7 @@ public class DocumentClustering {
 			// Create DataObjects
 			int size = dataSetSizes[i];
 			for (int j = 0; j < size; j++) { 	
-				doc = new Document("OBJ" + j + ".txt", "", j);
+				doc = new Document("OBJ" + (j+1) + ".txt", "", j);
 				process.addDataObject(doc);
 				System.out.println("Added dataObject: " + doc.getTitle());
 			}
@@ -58,6 +58,7 @@ public class DocumentClustering {
 		
 			// -------------------------------------------------------------------------------
 			
+			/*
 			// K-medoids
 			int k = 2; // Number of clusters
 			int iterations = 2; // Number of iterations
@@ -78,6 +79,7 @@ public class DocumentClustering {
 			double fuzziness = 2.0; // Normally  the fuzziness is set to 2.0
 			k = 2; iterations = 2;
 			FuzzyCMeansTest(filenames[i], process, similarityMatrix, fuzziness, k, iterations);
+			*/
 			
 			// BestStar
 			double GSM = 0.5;
@@ -94,7 +96,7 @@ public class DocumentClustering {
 	private static void FuzzyCMeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			double fuzziness, int numClusters, int iterations) {
 		
-		// Set and run K-Means Clustering Strategy 
+		// Set and run Fuzzy C-Means Clustering Strategy 
 		process.setClusteringStrategy(new FuzzyCMeansClusteringStrategy(fuzziness, numClusters, iterations));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 				
@@ -110,7 +112,7 @@ public class DocumentClustering {
 	private static void BestStarTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			double GSM) {
 		
-		// Set and run K-Means Clustering Strategy 
+		// Set and run Best Star Clustering Strategy 
 		process.setClusteringStrategy(new BestStarClusteringStrategy(GSM));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 				
@@ -142,7 +144,7 @@ public class DocumentClustering {
 	private static void KmedoidsTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			int numClusters, int iterations, int centroidStrategy) {		
 		
-		// Set and run K-Means Clustering Strategy		
+		// Set and run K-Medoids Clustering Strategy		
 		process.setClusteringStrategy(new KmedoidsClusteringStrategy(numClusters, iterations, centroidStrategy));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 		
