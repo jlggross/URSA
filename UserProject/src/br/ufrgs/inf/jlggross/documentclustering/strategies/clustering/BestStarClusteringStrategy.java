@@ -34,6 +34,7 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 		this.threshold = threshold;
 	}
 		
+	
 	/**
 	 * Definition: Best Star core algorithm execution.
 	 * 
@@ -42,7 +43,7 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
 		
-		// Auxiliar variables
+		// Auxiliary variables
 		int dataSize = dataObjects.size();
 		int numClusters = 0;
 		

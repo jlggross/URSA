@@ -19,6 +19,7 @@ import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.FullStarsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.FuzzyCMeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
@@ -80,10 +81,12 @@ public class DocumentClustering {
 			k = 2; iterations = 2;
 			FuzzyCMeansTest(filenames[i], process, similarityMatrix, fuzziness, k, iterations);
 			*/
-			
 			// BestStar
 			double GSM = 0.5;
 			BestStarTest(filenames[i], process, similarityMatrix, GSM);
+			
+			// FullStar
+			FullStarsTest(filenames[i], process, similarityMatrix, GSM);
 
 			// -------------------------------------------------------------------------------
 		}
@@ -91,7 +94,7 @@ public class DocumentClustering {
 	
 	
 	/**
-	 * Test BestStar clustering strategy algorithm
+	 * Test Fuzzy C-Means clustering strategy algorithm
 	 */
 	private static void FuzzyCMeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			double fuzziness, int numClusters, int iterations) {
@@ -102,6 +105,22 @@ public class DocumentClustering {
 				
 		// Write clusters on file
 		String strategy = "FuzzyCMeans";
+		writeCluster(process, strategy, filename);
+	}
+	
+	
+	/**
+	 * Test FullStar clustering strategy algorithm
+	 */
+	private static void FullStarsTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
+			double GSM) {
+		
+		// Set and run Full Stars Clustering Strategy 
+		process.setClusteringStrategy(new FullStarsClusteringStrategy(GSM));
+		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
+				
+		// Write clusters on file
+		String strategy = "FullStars";
 		writeCluster(process, strategy, filename);
 	}
 	
