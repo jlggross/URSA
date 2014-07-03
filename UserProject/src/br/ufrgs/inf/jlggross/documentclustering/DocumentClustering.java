@@ -17,10 +17,10 @@ import br.ufrgs.inf.jlggross.clustering.ClusteringProcess;
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.AgglomerativeHierarchicalClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.FullStarsClusteringStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.FuzzyCMeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
@@ -37,8 +37,8 @@ public class DocumentClustering {
 	}
 	
 	private static void TestClusteringStrategies() {
-		int[] dataSetSizes = {5, 10, 15};
-		String[] filenames = {"similarity5", "similarity10", "similarity15"};
+		int[] dataSetSizes = {6, 5, 6, 10, 15};
+		String[] filenames = {"similarity6", "similarity5", "similarity6", "similarity10", "similarity15"};
 		
 		Document doc;
 		for (int i = 0; i < dataSetSizes.length; i++) {
@@ -47,7 +47,7 @@ public class DocumentClustering {
 			// Create DataObjects
 			int size = dataSetSizes[i];
 			for (int j = 0; j < size; j++) { 	
-				doc = new Document("OBJ" + (j+1) + ".txt", "", j);
+				doc = new Document("OBJ" + j + ".txt", "", j);
 				process.addDataObject(doc);
 				System.out.println("Added dataObject: " + doc.getTitle());
 			}
@@ -75,19 +75,28 @@ public class DocumentClustering {
 			double epsilon = 0.2;
 			int minObjs = 2; // Minimum number of objects per cluster
 			DBSCANTest(filenames[i], process, similarityMatrix, epsilon, minObjs);
+			*/
 			
+			/*
 			// Fuzzy C-Means
 			double fuzziness = 2.0; // Normally  the fuzziness is set to 2.0
 			k = 2; iterations = 2;
 			FuzzyCMeansTest(filenames[i], process, similarityMatrix, fuzziness, k, iterations);
 			*/
+			
+			/*
 			// BestStar
 			double GSM = 0.5;
 			BestStarTest(filenames[i], process, similarityMatrix, GSM);
 			
 			// FullStar
 			FullStarsTest(filenames[i], process, similarityMatrix, GSM);
+			*/
 
+			// Agglomerative Hierarchical
+			//thresholdLvl: 0.15, maxThreshold: 0.9, clusteringMethod: 1
+			AgglomerativeHierarchicalTest(filenames[i], process, similarityMatrix, 0.10, 0.70, 1);
+			
 			// -------------------------------------------------------------------------------
 		}
 	}
@@ -95,7 +104,8 @@ public class DocumentClustering {
 	
 	/**
 	 * Test Fuzzy C-Means clustering strategy algorithm
-	 */
+	 */ 
+	/*
 	private static void FuzzyCMeansTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
 			double fuzziness, int numClusters, int iterations) {
 		
@@ -107,7 +117,23 @@ public class DocumentClustering {
 		String strategy = "FuzzyCMeans";
 		writeCluster(process, strategy, filename);
 	}
+	*/
 	
+	/**
+	 * Test Agglomerative Hierarchical clustering strategy algorithm
+	 */
+	private static void AgglomerativeHierarchicalTest(String filename, ClusteringProcess process, Matrix2D similarityMatrix,
+			double thresholdLvl, double minThreshold, int clusteringMethod) {
+		
+		// Set and run Agglomerative Hierarchical Clustering Strategy 
+		process.setClusteringStrategy(new AgglomerativeHierarchicalClusteringStrategy(
+				thresholdLvl, minThreshold, clusteringMethod));
+		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
+				
+		// Write clusters on file
+		String strategy = "Agglomerative";
+		writeCluster(process, strategy, filename);
+	}
 	
 	/**
 	 * Test FullStar clustering strategy algorithm
