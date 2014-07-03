@@ -1,4 +1,4 @@
-package br.ufrgs.inf.jlggross.documentclustering.strategies.clustering;
+package in.study;
 
 import java.util.ArrayList;
 import java.util.List;

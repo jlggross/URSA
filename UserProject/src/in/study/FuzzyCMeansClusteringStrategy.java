@@ -1,4 +1,4 @@
-package br.ufrgs.inf.jlggross.documentclustering.strategies.clustering;
+package in.study;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class FuzzyCMeansClusteringStrategy extends ClusteringStrategy {
 	
 	
 	/**
-	 * Definition: K-Means core algorithm execution.
+	 * Definition: Fuzzy C-Means core algorithm execution.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
@@ -60,6 +60,7 @@ public class FuzzyCMeansClusteringStrategy extends ClusteringStrategy {
 		
 		// 1. Create membership matriz
 		double[][] membership = new double[dataObjects.size()][this.numClusters];
+		double[][] centroids = new double[dataObjects.size()][this.numClusters];
 		
 		// 1.1 Initialize membership matrix
 		Random r = new Random();
@@ -72,15 +73,18 @@ public class FuzzyCMeansClusteringStrategy extends ClusteringStrategy {
 		
 		int it = 0;
 		do {
-			
 			// 2. Calculate centroids
 			
+			// 3. update membership
+			
+			// 4. Test convergence
 			
 			it++;
-			// TODO - add convergence test
 		} while (it < this.iterations);
 		
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
+		// build clusters
+		
 		return dataClusters;
 	}
 
