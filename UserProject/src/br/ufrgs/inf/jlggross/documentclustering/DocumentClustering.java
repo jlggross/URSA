@@ -17,6 +17,7 @@ import br.ufrgs.inf.jlggross.clustering.ClusteringProcess;
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.SilhouetteAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.AgglomerativeHierarchicalClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.DBSCANClusteringStrategy;
@@ -119,6 +120,7 @@ public class DocumentClustering {
 	}
 	*/
 	
+	
 	/**
 	 * Test Agglomerative Hierarchical clustering strategy algorithm
 	 */
@@ -133,7 +135,14 @@ public class DocumentClustering {
 		// Write clusters on file
 		String strategy = "Agglomerative";
 		writeCluster(process, strategy, filename);
+		
+		// Cluster Analysis
+		similarityMatrix.loadMatrix("similarity/" + filename + ".txt", process.dataObjects.size()); //re-load similarity matrix
+		SilhouetteAnalysisStrategy s = new SilhouetteAnalysisStrategy();
+		double silhouette = s.executeAnalysis(process.dataObjects, process.dataClusters, similarityMatrix);
+		System.out.println("Silhouette: " + silhouette);
 	}
+	
 	
 	/**
 	 * Test FullStar clustering strategy algorithm
