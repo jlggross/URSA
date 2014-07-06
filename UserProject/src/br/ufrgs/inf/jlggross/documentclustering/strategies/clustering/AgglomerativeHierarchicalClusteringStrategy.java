@@ -35,8 +35,11 @@ public class AgglomerativeHierarchicalClusteringStrategy extends ClusteringStrat
 	/**
 	 * Definition: Agglomerative Hierarchical Constructor
 	 * 
-	 * @param threshold : indicates the minimum similarity that an
-	 * object need to be part of a cluster.
+	 * @param thresholdLvl : the amount of similarity decreased in each iteration for the
+	 * global threshold.  
+	 * @param minThreshold : minimum possible threshold. 
+	 * @param clusteringMethod : a clustering method is chosen for the agglomerative hierarchical 
+	 * clustering algorithm.
 	 */
 	public AgglomerativeHierarchicalClusteringStrategy(double thresholdLvl, double minThreshold, 
 			int clusteringMethod) {
@@ -61,7 +64,6 @@ public class AgglomerativeHierarchicalClusteringStrategy extends ClusteringStrat
 	 * 
 	 * @param dataObjects : list of data objects.
 	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
-	 * @param clusteringMethod : a clustering method is chosen for the agglomerative hierarchical clustering algorithm.
 	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
 		
