@@ -124,6 +124,7 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 			}	
 			
 			// Test convergence
+			// TODO
 		}
 		
 		// Construct the clusters

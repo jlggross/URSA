@@ -11,9 +11,9 @@ import br.ufrgs.inf.jlggross.clustering.strategy.ClusteringStrategy;
 /* -----------------------------------------------------------------------------------------------
  *  
  * Full Stars Algorithm:
- * 1. The first object will be in the first cluster. The first object of a cluster is 
+ * 1. The first object will be in the first cluster. The first object added in a cluster is 
  * always its center. 
- * 2. From the second object, assigns the object to all cluster with similarity above or equal the
+ * 2. From the second object, assigns the object to all clusters with similarity above or equal the
  * threshold. If the object is not assigned to any cluster, then creates its own.
  * 
  * -----------------------------------------------------------------------------------------------

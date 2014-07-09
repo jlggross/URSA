@@ -60,15 +60,6 @@ public class CliquesClusteringStrategy extends ClusteringStrategy {
 			
 			dataClusters.add(cluster);
 		}
-
-		
-		// Remove clusters of one document.
-		/*List<DataCluster> realClusters = new ArrayList<DataCluster>();
-		for (DataCluster cluster : dataClusters) {
-			if (cluster.getDataObjects().size() > 1) {
-				realClusters.add(cluster);
-			}
-		}*/
 		
 		return dataClusters;
 	}

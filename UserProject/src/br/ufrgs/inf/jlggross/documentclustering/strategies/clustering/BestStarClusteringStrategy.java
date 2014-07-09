@@ -53,7 +53,7 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 		// 1. Creates first cluster
 		{ 
 			for (int i = 0; i < dataSize; i++)
-				clusters[i] = new DataCluster();
+				clusters[i] = new DataCluster("Cluster " + i);
 			
 			DataCluster c = new DataCluster();
 			c.addDataObject(dataObjects.get(0));
