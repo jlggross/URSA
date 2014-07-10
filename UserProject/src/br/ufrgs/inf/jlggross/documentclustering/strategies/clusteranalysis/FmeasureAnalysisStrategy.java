@@ -109,9 +109,15 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 				currentClassIndex++;
 			}
 						
-			precision[clusterIndex] = max / cluster.size();
-			recall[clusterIndex] = max / this.dataClasses.get(selectedClassIndex).size();
+			precision[clusterIndex] = (double) max / cluster.size();
+			recall[clusterIndex] = (double) max / this.dataClasses.get(selectedClassIndex).size();
 			fmeasure[clusterIndex] = fmeasure(precision[clusterIndex], recall[clusterIndex]);
+			
+			System.out.println("Cluster " + clusterIndex);
+			System.out.println("\tPrecision:\t" + precision[clusterIndex]);
+			System.out.println("\tRecall:\t\t" + recall[clusterIndex]);
+			System.out.println("\tFmeasure:\t" + fmeasure[clusterIndex]);
+			
 			clusterIndex++;
 		}
 		
