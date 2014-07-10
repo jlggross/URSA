@@ -42,23 +42,47 @@ import br.ufrgs.inf.jlggross.clustering.strategy.ClusteringStrategy;
  * 
  *   1. epsilon must be understand as "The maximum difference in similarity between two objects".
  *   2. So, if epsilon is 0.20, then we are expecting that all the objects with similarity 0.8 or 
- *   above will be in the same group. 
+ *   above will be in the same cluster. 
  * 
  * -----------------------------------------------------------------------------------------------   
  */
 
 public class DBSCANClusteringStrategy extends ClusteringStrategy {
-	private double epsilon; // must be from 0.0 to 1.0
+	private double epsilon;
 	private int minObjs; 
 	private int NOISE = -999;
-	private int VISITED = 999;
+	private int VISITED = 999; 
 	private int UNVISITED = 100;
 	
+	
+	/**
+	 * Definition: DBSCAN Constructor.
+	 * 
+	 * @param epsilon : epsilon is the maximum different in similarity between 
+	 * two objects. So if epsilon if 0.15, then objects with similarity 0.85 or
+	 * higher will be in the same cluster.
+	 * @param minObjs : the minimum number of data objects in each cluster. 
+	 */
 	public DBSCANClusteringStrategy(double epsilon, int minObjs) {
+		
+		if (epsilon < 0.0 || epsilon > 1.0)
+			throw new RuntimeException("DBSCAN: epsilon must be between 0.0 and 1.0.");
+		
+		if (minObjs < 2)
+			throw new RuntimeException("DBSCAN: minObjs must be 2 or higher. Cluster with"
+					+ "just one data object are not allowed");
+		
 		this.epsilon = epsilon;
 		this.minObjs = minObjs;
 	}
 	
+	
+	/**
+	 * Definition: DBCAN core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
+	 */
 	@Override
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
@@ -94,6 +118,7 @@ public class DBSCANClusteringStrategy extends ClusteringStrategy {
 		
 		return dataClusters;
 	}
+	
 	
 	/**
 	 * Get the indexes of the epsilon-neighborhood of a given object (indexOfObjsCluterStarter). 
