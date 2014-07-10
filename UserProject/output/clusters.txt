@@ -1,8 +1,0 @@
-2
-OBJ1.txt
-OBJ5.txt
-1
-OBJ2.txt
-2
-OBJ3.txt
-OBJ4.txt
