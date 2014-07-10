@@ -8,6 +8,11 @@ import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 
 public abstract class AnalysisStrategy extends BaseStrategy {
 
-	public abstract double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters, Matrix2D similarityMatrix);
+	public double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters) {
+		return 0;
+	}
 	
+	public double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
+		return 0;
+	}
 }

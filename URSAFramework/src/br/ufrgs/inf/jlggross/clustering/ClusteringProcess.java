@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import br.ufrgs.inf.jlggross.clustering.strategy.AnalysisStrategy;
 import br.ufrgs.inf.jlggross.clustering.strategy.BaseStrategy;
 import br.ufrgs.inf.jlggross.clustering.strategy.ClusteringStrategy;
 import br.ufrgs.inf.jlggross.clustering.strategy.FeatureSelectionStrategy;
@@ -32,6 +33,7 @@ public class ClusteringProcess extends Observable implements Runnable, Observer 
 	public FeatureSelectionStrategy featureSelectionStrategy;
 	public SimilarityStrategy similarityStrategy;
 	public ClusteringStrategy clusteringStrategy;
+	public AnalysisStrategy analysisStrategy;
 	
 	//These three are public just for testing purposes - they must be private
 	public List<DataObject> dataObjects;
@@ -58,6 +60,12 @@ public class ClusteringProcess extends Observable implements Runnable, Observer 
 		this.clusteringStrategy = strategy;
 		if (this.clusteringStrategy != null)
 			this.clusteringStrategy.addObserver(this);
+	}
+	
+	public void setAnalysisStrategy(AnalysisStrategy strategy) {
+		this.analysisStrategy = strategy;
+		if (this.analysisStrategy != null)
+			this.analysisStrategy.addObserver(this);
 	}
 	
 	public void addDataObject(DataObject dataObject) {
