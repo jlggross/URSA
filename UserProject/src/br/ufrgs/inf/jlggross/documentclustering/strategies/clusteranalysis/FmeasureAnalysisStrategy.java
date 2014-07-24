@@ -13,7 +13,23 @@ import br.ufrgs.inf.jlggross.documentclustering.Document;
 
 /* ---------------------------------------------------------------------------------
  * 
- * Precision, Recall and F-Measure:
+ * Precision: The fraction of a cluster that consists of objects of a specified class.
+ * The precision of cluster i with respect to class j is pij = mij / mi, where mi is
+ * the number of objects in cluster i and mij is the number of objects of class j in 
+ * cluster i.
+ * 
+ * Recall: The extent to which a cluster contains all objects of a specified class.
+ * The recall of cluster i with respect to class j is rij = mij, mj, where mj is
+ * the number of objects in class j and mij is the number of objects of class j in 
+ * cluster i.
+ * 
+ * F-Measure: A combination of both precision and recall that measures the extent to
+ * which a cluster contains only objects of a particular class and all objects of that
+ * class. The F-Measure of cluster i with respect to class j is: 
+ * 		F(i, j) = (2 * pij * rij) / (pij + rij)
+ * 
+ * 
+ * Precision, Recall and F-Measure algorithm:
  * 1. Inform the expected classes of information (analysis with external information
  * - supervised analysis).
  * 2. Given the clusters, calculated by using an clustering algorithm, check how many
@@ -55,7 +71,7 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 	public FmeasureAnalysisStrategy(String filename) {
 		// Initialize the data classes
 		this.dataClasses = new ArrayList<List<String>>();
-		this.dataClasses = this.loadDataClasses(filename);
+		this.dataClasses = FmeasureAnalysisStrategy.loadDataClasses(filename);
 	}
 	
 	
@@ -130,7 +146,7 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 	 * 
 	 * @param filename : refers to a file with the expected classes. 
 	 */
-	private List<List<String>> loadDataClasses(String filename) {
+	public static List<List<String>> loadDataClasses(String filename) {
 		
 		List<List<String>> classes = new ArrayList<List<String>>();
 		

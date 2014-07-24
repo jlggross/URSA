@@ -17,6 +17,7 @@ import br.ufrgs.inf.jlggross.clustering.ClusteringProcess;
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.EntropyAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.FmeasureAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.SilhouetteAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.AgglomerativeHierarchicalClusteringStrategy;
@@ -38,9 +39,14 @@ public class DocumentClustering {
 	public static void main(String args[]) {		
 		//TestClusteringStrategies();
 		//reutersClustering();
-		TestClusteringWikipedia12();
+		//TestClusteringWikipedia12();
+		TestClusteringWikipedia13();
 	}
 	
+	/**
+	 * 
+	 * 
+	 * */
 	private static void TestClusteringWikipedia12() {
 		ClusteringProcess process = new ClusteringProcess();
 		
@@ -51,7 +57,60 @@ public class DocumentClustering {
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
 		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
-		process.setClusteringStrategy(new OldBestStarClusteringStrategy(0.0));
+		process.setClusteringStrategy(new BestStarClusteringStrategy(0.10));
+		
+		try { // Add data objects (documents!).
+			File docFolder = new File("data/wikipedia12");
+			int index = 0;
+			for (File doc : docFolder.listFiles()) {
+				BufferedReader reader = new BufferedReader(new FileReader(doc));
+				String line = "";
+				StringBuffer content = new StringBuffer();
+				while (null != (line = reader.readLine())) {
+					content.append(line);
+				}
+				String[] name = doc.toString().split("\\\\");
+				process.addDataObject(new Document(name[name.length-1], content.toString(), index));
+				index++;
+				System.out.println("DataObject added: " + name[name.length-1]);
+				reader.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+				
+		process.dataObjects = process.featureSelectionStrategy.executeFeatureSelection(process.dataObjects);
+		process.similarityMatrix = process.similarityStrategy.executeSimilarity(process.dataObjects);	
+		System.out.print(process.similarityMatrix.toString());
+		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, process.similarityMatrix);	
+						
+		// Write clusters on file
+		String strategy = "BestStar";
+		writeCluster(process, strategy, "wikipedia12");
+		
+		// Analysis
+		process.setAnalysisStrategy(new FmeasureAnalysisStrategy("tests/test01-wikipedia12/classes.txt"));
+		process.analysisStrategy.executeAnalysis(process.dataObjects, process.dataClusters);
+	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * */
+	private static void TestClusteringWikipedia13() {
+		ClusteringProcess process = new ClusteringProcess();
+		
+		Set<String> stopwords = new HashSet<String>();
+		stopwords.addAll(getStopwords("consoantes"));
+		stopwords.addAll(getStopwords("english"));
+		stopwords.addAll(getStopwords("vogais"));
+		
+		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
+		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
+		process.setClusteringStrategy(new BestStarClusteringStrategy(0.02));
 		
 		try { // Add data objects (documents!).
 			File docFolder = new File("data/wikipedia13");
@@ -85,10 +144,16 @@ public class DocumentClustering {
 		writeCluster(process, strategy, "wikipedia13");
 		
 		// Analysis
-		process.setAnalysisStrategy(new FmeasureAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
+		//process.setAnalysisStrategy(new FmeasureAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
+		process.setAnalysisStrategy(new EntropyAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
 		process.analysisStrategy.executeAnalysis(process.dataObjects, process.dataClusters);
 	}
 	
+	
+	/**
+	 * 
+	 * 
+	 * */
 	private static void TestClusteringStrategies() {
 		int[] dataSetSizes = {4, 5, 6, 10, 15};
 		String[] filenames = {"similarity4", "similarity5", "similarity6", "similarity10", "similarity15"};
@@ -141,11 +206,11 @@ public class DocumentClustering {
 			AgglomerativeHierarchicalTest(filenames[i], process, similarityMatrix, 0.10, 0.70, 1);
 			*/
 			
-			/*
-			BestStarTest(filenames[i], process, similarityMatrix, 0.5);
-			*/
 			
-			FullStarsTest(filenames[i], process, similarityMatrix, 0.5);
+			BestStarTest(filenames[i], process, similarityMatrix, 0.5);
+		
+			
+			//FullStarsTest(filenames[i], process, similarityMatrix, 0.5);
 		
 		}
 	}
