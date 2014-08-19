@@ -17,8 +17,8 @@ import br.ufrgs.inf.jlggross.clustering.ClusteringProcess;
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
-import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.EntropyAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.FmeasureAnalysisStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.PurityAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clusteranalysis.SilhouetteAnalysisStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.AgglomerativeHierarchicalClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.BestStarClusteringStrategy;
@@ -29,6 +29,7 @@ import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsCl
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldBestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldFullStarsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.VideoMetaDataSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.FuzzyMeansSimilarityStrategy;
 
 public class DocumentClustering {
@@ -40,11 +41,36 @@ public class DocumentClustering {
 		//TestClusteringStrategies();
 		//reutersClustering();
 		//TestClusteringWikipedia12();
-		TestClusteringWikipedia13();
+		//TestClusteringWikipedia13();
+		TestMediaFiles();
 	}
+	
 	
 	/**
 	 * 
+	 * */
+	private static void TestMediaFiles() {
+		ClusteringProcess process = new ClusteringProcess();
+		process.setFeatureSelectionStrategy(new VideoMetaDataSelectionStrategy());
+		
+		// Add data objects
+		String mediapath = "resVideo/";
+		File mediaDir = new File(mediapath);
+		File[] medias = mediaDir.listFiles();
+		int index = 0;
+		for (File mediaFile : medias) {
+			String filename[] = mediaFile.getPath().split("\\\\");
+			process.addDataObject(new VideoMediaFile(filename[1], mediaFile.getPath(), index));
+			index++;
+		}	
+
+		// Processing
+		process.dataObjects = process.featureSelectionStrategy.executeFeatureSelection(process.dataObjects);
+	}
+	
+	
+	
+	/**
 	 * 
 	 * */
 	private static void TestClusteringWikipedia12() {
@@ -70,7 +96,7 @@ public class DocumentClustering {
 					content.append(line);
 				}
 				String[] name = doc.toString().split("\\\\");
-				process.addDataObject(new Document(name[name.length-1], content.toString(), index));
+				process.addDataObject(new TextFile(name[name.length-1], content.toString(), index));
 				index++;
 				System.out.println("DataObject added: " + name[name.length-1]);
 				reader.close();
@@ -110,7 +136,7 @@ public class DocumentClustering {
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
 		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
-		process.setClusteringStrategy(new BestStarClusteringStrategy(0.02));
+		process.setClusteringStrategy(new BestStarClusteringStrategy(0.03));
 		
 		try { // Add data objects (documents!).
 			File docFolder = new File("data/wikipedia13");
@@ -123,7 +149,7 @@ public class DocumentClustering {
 					content.append(line);
 				}
 				String[] name = doc.toString().split("\\\\");
-				process.addDataObject(new Document(name[name.length-1], content.toString(), index));
+				process.addDataObject(new TextFile(name[name.length-1], content.toString(), index));
 				index++;
 				System.out.println("DataObject added: " + name[name.length-1]);
 				reader.close();
@@ -145,7 +171,8 @@ public class DocumentClustering {
 		
 		// Analysis
 		//process.setAnalysisStrategy(new FmeasureAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
-		process.setAnalysisStrategy(new EntropyAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
+		//process.setAnalysisStrategy(new EntropyAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
+		process.setAnalysisStrategy(new PurityAnalysisStrategy("tests/test02-wikipedia13/classes.txt"));
 		process.analysisStrategy.executeAnalysis(process.dataObjects, process.dataClusters);
 	}
 	
@@ -158,14 +185,14 @@ public class DocumentClustering {
 		int[] dataSetSizes = {4, 5, 6, 10, 15};
 		String[] filenames = {"similarity4", "similarity5", "similarity6", "similarity10", "similarity15"};
 		
-		Document doc;
+		TextFile doc;
 		for (int i = 0; i < dataSetSizes.length; i++) {
 			ClusteringProcess process = new ClusteringProcess();
 
 			// Create DataObjects
 			int size = Integer.parseInt(filenames[i].substring(10));
 			for (int j = 0; j < size; j++) { 	
-				doc = new Document("OBJ" + j + ".txt", "", j);
+				doc = new TextFile("OBJ" + j + ".txt", "", j);
 				process.addDataObject(doc);
 				System.out.println("Added dataObject: " + doc.getTitle());
 			}
@@ -376,7 +403,7 @@ public class DocumentClustering {
 				writer.append(s);
 				
 				for (DataObject object : cluster.getDataObjects()) {
-					Document doc = (Document) object;
+					TextFile doc = (TextFile) object;
 					s = doc.getTitle() + "\n";
 					System.out.printf(s);
 					writer.append(s);
@@ -440,7 +467,7 @@ public class DocumentClustering {
 					content.append(line);
 				}
 				
-				process.addDataObject(new Document(doc.toString(), content.toString(), index));
+				process.addDataObject(new TextFile(doc.toString(), content.toString(), index));
 				index++;
 				
 				System.out.println("DataObject added: " + doc.toString());

@@ -99,7 +99,7 @@ public class ConsoleObserver implements Observer {
 				file.mkdirs();
 			}
 			for (DataObject object : process.getDataObjects()) {
-				Document document = (Document) object;
+				TextFile document = (TextFile) object;
 				String[] title = document.getTitle().split("\\\\");
 				BufferedWriter writer = new BufferedWriter(new FileWriter("output/documents/" + title[title.length-1]));
 				writer.append(object.toString());
@@ -126,7 +126,7 @@ public class ConsoleObserver implements Observer {
 			for (DataCluster cluster : process.getDataClusters()) {
 				writer.append(cluster.getDataObjects().size() + "\n");
 				for (DataObject object : cluster.getDataObjects()) {
-					Document doc = (Document) object;
+					TextFile doc = (TextFile) object;
 					writer.append(doc.getTitle()).append("\n");
 				}
 			}
