@@ -7,7 +7,7 @@ import br.ufrgs.inf.jlggross.clustering.DataFeature;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.Matrix2D;
 import br.ufrgs.inf.jlggross.clustering.strategy.SimilarityStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.Document;
+import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 import br.ufrgs.inf.jlggross.documentclustering.Term;
 
 public class FuzzyMeansSimilarityStrategy extends SimilarityStrategy {
@@ -18,8 +18,8 @@ public class FuzzyMeansSimilarityStrategy extends SimilarityStrategy {
 		int objectsCount = dataObjects.size();
 		Matrix2D similarityMatrix = new Matrix2D(objectsCount);
 		
-		Document doc1 = null;
-		Document doc2 = null;
+		TextFile doc1 = null;
+		TextFile doc2 = null;
 		
 		List<Term> smallerCommonTerms = new ArrayList<Term>();
 		List<Term> biggerCommonTerms = new ArrayList<Term>();
@@ -27,11 +27,11 @@ public class FuzzyMeansSimilarityStrategy extends SimilarityStrategy {
 		int p = 0;
 		for (int i = 0; i < objectsCount; i++) {
 			for (int j = i + 1; j < objectsCount; j++) {
-				doc1 = (Document) dataObjects.get(i);
-				doc2 = (Document) dataObjects.get(j);
+				doc1 = (TextFile) dataObjects.get(i);
+				doc2 = (TextFile) dataObjects.get(j);
 				
-				Document smaller = (doc1.getFeatureList().size() > doc2.getFeatureList().size())? doc2 : doc1;
-				Document bigger = (doc1.getFeatureList().size() > doc2.getFeatureList().size())? doc1 : doc2;
+				TextFile smaller = (doc1.getFeatureList().size() > doc2.getFeatureList().size())? doc2 : doc1;
+				TextFile bigger = (doc1.getFeatureList().size() > doc2.getFeatureList().size())? doc1 : doc2;
 
 				smallerCommonTerms.clear();
 				biggerCommonTerms.clear();

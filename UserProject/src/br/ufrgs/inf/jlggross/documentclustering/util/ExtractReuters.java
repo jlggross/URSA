@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
-import br.ufrgs.inf.jlggross.documentclustering.Document;
+import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 
 public class ExtractReuters {
 	private static Pattern reutersDoc = Pattern.compile("<reuters (.*?)</reuters>");
@@ -31,6 +31,8 @@ public class ExtractReuters {
 		File reutersDir = new File("data/reuters-sgm");
 		
 		File[] sgmFiles = reutersDir.listFiles(new FileFilter() {
+			
+			
 			
 			@Override
 			public boolean accept(File file) {
@@ -130,7 +132,7 @@ public class ExtractReuters {
 								}
 								int newId = Integer.valueOf(matchNewid.group(1));
 								for (DataObject object : dataObjects) {
-									Document doc1 = (Document) object;
+									TextFile doc1 = (TextFile) object;
 									int x = 0;
 									String title = doc1.getTitle();
 									title = title.replace("data\\reuters-extracted\\", "");

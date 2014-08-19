@@ -13,7 +13,7 @@ import java.util.Set;
 import br.ufrgs.inf.jlggross.clustering.DataFeature;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.strategy.FeatureSelectionStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.Document;
+import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 import br.ufrgs.inf.jlggross.documentclustering.Term;
 
 public class TermSelectionStrategy extends FeatureSelectionStrategy {
@@ -39,7 +39,7 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		this.totalDocuments = dataObjects.size();
 		
 		for (DataObject dataObject : dataObjects) {
-			Document doc = (Document) dataObject;
+			TextFile doc = (TextFile) dataObject;
 			doc.clearFeatureList();
 			this.tokenize(doc);
 			this.calculateRelative(doc);
@@ -50,7 +50,7 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		return dataObjects;
 	}
 	
-	private void tokenize(Document doc) {
+	private void tokenize(TextFile doc) {
 		final HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
 		String[] tokens = doc.getContent().toLowerCase()
 				.split("[^\\p{Alnum}]");
@@ -86,7 +86,7 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		}
 	}
 	
-	private void calculateRelative(Document doc) {
+	private void calculateRelative(TextFile doc) {
 		List<DataFeature> features = doc.getFeatureList();
 		
 		double featuresCount = 0;
@@ -102,7 +102,7 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		}
 	}
 	
-	private void dumpSelectedTerms(Document doc) {
+	private void dumpSelectedTerms(TextFile doc) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/selected_terms.txt", true));
 			for (DataFeature feature : doc.getFeatureList()) {

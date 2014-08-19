@@ -6,7 +6,7 @@ import java.util.List;
 import br.ufrgs.inf.jlggross.clustering.DataCluster;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.strategy.AnalysisStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.Document;
+import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 
 /* ---------------------------------------------------------------------------------
  * 
@@ -72,8 +72,8 @@ public class EntropyAnalysisStrategy extends AnalysisStrategy {
 			List<String> newCluster = new ArrayList<String>();
 			int size = c.getDataObjects().size();
 			for (int i = 0; i < size; i++) {
-				Document doc = new Document("doc", "", 0);
-				doc = (Document) c.getObject(i);
+				TextFile doc = new TextFile("doc", "", 0);
+				doc = (TextFile) c.getObject(i);
 				newCluster.add(doc.getTitle());
 			}
 			clusters.add(newCluster);
