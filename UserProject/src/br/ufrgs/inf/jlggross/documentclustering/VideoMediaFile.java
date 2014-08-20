@@ -9,9 +9,6 @@ import br.ufrgs.inf.jlggross.clustering.DataFeature;
 public class VideoMediaFile extends MediaFile {
 	
 	// Media info
-	private long mediaDuration;	
-	private long mediaFileSize;
-	private long mediaBitrate;
 	private int numberStreams;
 	
 	// Video Stream info

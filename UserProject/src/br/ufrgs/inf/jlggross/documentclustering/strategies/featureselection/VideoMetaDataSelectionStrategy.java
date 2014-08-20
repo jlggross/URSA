@@ -25,7 +25,7 @@ import com.xuggle.xuggler.IStreamCoder;
  * This information in then used for comparing the data objects, stablising their level of
  * similarity.
  * 
- * The extraction is made using the XUggle API. Here just .mp4 files are been handled, but the
+ * The extraction is made using the Xuggle API. Here just .mp4 files are been handled, but the
  * API is capable of manipulating almost every audio and video container.
  * 
  * For info about the Xuggle API: http://www.xuggle.com/xuggler
@@ -34,11 +34,8 @@ import com.xuggle.xuggler.IStreamCoder;
  */
 
 public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
-	private Set<String> stopWords;
 	private int processedDocuments;
-	private int totalDocuments;
-	
-	
+		
 	/**
 	 * Definition: VideoMetaDataSelectionStrategy
 	 */
@@ -54,7 +51,6 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	@Override
 	public List<DataObject> executeFeatureSelection(List<DataObject> dataObjects) {
 		this.processedDocuments = 0;
-		this.totalDocuments = dataObjects.size();
 				
 		for (DataObject dataObject : dataObjects) {
 			VideoMediaFile videoFile = (VideoMediaFile) dataObject;
@@ -129,9 +125,8 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 				videoFile.setTimebase(coder.getSampleRate());
 				
 				// samplerate
-				StringBuilder str = new StringBuilder();
-				str.append(stream.getTimeBase().getNumerator() + "/" + stream.getTimeBase().getDenominator());
-				videoFile.setSamplerate(str.toString());
+				String str = stream.getTimeBase().getNumerator() + "/" + stream.getTimeBase().getDenominator();
+				videoFile.setSamplerate(str);
 				
 			} else if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO && !videoStream) {
 				videoStream = true;
