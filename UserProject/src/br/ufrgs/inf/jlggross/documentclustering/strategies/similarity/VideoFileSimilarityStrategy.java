@@ -50,7 +50,7 @@ public class VideoFileSimilarityStrategy extends SimilarityStrategy {
 							similarValues++;
 					}
 					
-					if (video1MetaData.getId().equals("numberStreams") || 
+					else if (video1MetaData.getId().equals("numberStreams") || 
 						video1MetaData.getId().equals("videoWidth") ||
 						video1MetaData.getId().equals("videoHeight")) {
 						int v1 = Integer.valueOf(video1MetaData.getValue()).intValue();
@@ -59,7 +59,7 @@ public class VideoFileSimilarityStrategy extends SimilarityStrategy {
 							similarValues++;
 					}
 
-					if (video1MetaData.getId().equals("videoCodecType") ||
+					else if (video1MetaData.getId().equals("videoCodecType") ||
 						video1MetaData.getId().equals("audioCodecType") ||
 						video1MetaData.getId().equals("audioLanguage") ||
 						video1MetaData.getId().equals("samplerate")) {

@@ -111,12 +111,18 @@ public class AudioMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	    		audioFile.setTitle(value);
 	    	}
 	    	else if (aKey.equals("track")) {
-	    		audioFile.setTrack(Integer.parseInt(value));
+	    		String[] d = value.split("/");
+	    		if (value.equals(d[0]))
+	    			d = value.split("-");
+	    		
+	    		audioFile.setTrack(Integer.parseInt(d[0]));
 	    	}
 	    	else if (aKey.equals("date")) {
-	    		String d[] = value.split("-/");
-	    		audioFile.setTrack(Integer.parseInt(d[0]));
-
+	    		String[] d = value.split("/");
+	    		if (value.equals(d[0]))
+	    			d = value.split("-");
+	    		
+	    		audioFile.setDate(Integer.parseInt(d[0]));
 		    	System.out.printf("date: %s\n", d[0]);
 	    	}
 	    	

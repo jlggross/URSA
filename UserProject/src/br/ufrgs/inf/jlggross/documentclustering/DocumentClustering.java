@@ -28,8 +28,10 @@ import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmeansClus
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.KmedoidsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldBestStarClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldFullStarsClusteringStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.AudioMetaDataSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.VideoMetaDataSelectionStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.AudioFileSimilarityStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.TextFileFuzzyMeansSimilarityStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.VideoFileSimilarityStrategy;
 
@@ -43,26 +45,58 @@ public class DocumentClustering {
 		//reutersClustering();
 		//TestClusteringWikipedia12();
 		//TestClusteringWikipedia13();
-		TestMediaFiles();
+		//TestVideoFiles();
+		TestAudioFiles();
 	}
 	
 	
 	/**
 	 * 
 	 * */
-	private static void TestMediaFiles() {
+	private static void TestAudioFiles() {
 		ClusteringProcess process = new ClusteringProcess();
-		process.setFeatureSelectionStrategy(new VideoMetaDataSelectionStrategy());
-		process.setSimilarityStrategy(new VideoFileSimilarityStrategy());
+		process.setFeatureSelectionStrategy(new AudioMetaDataSelectionStrategy());
+		process.setSimilarityStrategy(new AudioFileSimilarityStrategy());
 		
 		// Add data objects
-		String mediapath = "resVideo/";
+		String mediapath = "data/resAudio/";
 		File mediaDir = new File(mediapath);
 		File[] medias = mediaDir.listFiles();
 		int index = 0;
 		for (File mediaFile : medias) {
 			String filename[] = mediaFile.getPath().split("\\\\");
-			process.addDataObject(new VideoMediaFile(filename[1], mediaFile.getPath(), index));
+			process.addDataObject(new AudioMediaFile(filename[2], mediaFile.getPath(), index));
+			index++;
+		}	
+
+		// Processing
+		process.dataObjects = process.featureSelectionStrategy.executeFeatureSelection(process.dataObjects);
+		process.similarityMatrix = process.similarityStrategy.executeSimilarity(process.dataObjects);	
+		System.out.print(process.similarityMatrix.toString());
+		
+		for (DataObject dataObject : process.dataObjects) {
+			System.out.println(dataObject.toString());
+		}
+	}
+	
+	
+	
+	/**
+	 * 
+	 * */
+	private static void TestVideoFiles() {
+		ClusteringProcess process = new ClusteringProcess();
+		process.setFeatureSelectionStrategy(new VideoMetaDataSelectionStrategy());
+		process.setSimilarityStrategy(new VideoFileSimilarityStrategy());
+		
+		// Add data objects
+		String mediapath = "data/resVideo/";
+		File mediaDir = new File(mediapath);
+		File[] medias = mediaDir.listFiles();
+		int index = 0;
+		for (File mediaFile : medias) {
+			String filename[] = mediaFile.getPath().split("\\\\");
+			process.addDataObject(new VideoMediaFile(filename[2], mediaFile.getPath(), index));
 			index++;
 		}	
 
