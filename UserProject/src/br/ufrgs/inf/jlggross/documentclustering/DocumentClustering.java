@@ -66,6 +66,11 @@ public class DocumentClustering {
 
 		// Processing
 		process.dataObjects = process.featureSelectionStrategy.executeFeatureSelection(process.dataObjects);
+		
+		for (DataObject dataObject : process.dataObjects) {
+			//VideoMediaFile aVideo = (VideoMediaFile) dataObject; 
+			System.out.println(dataObject.toString());
+		}
 	}
 	
 	

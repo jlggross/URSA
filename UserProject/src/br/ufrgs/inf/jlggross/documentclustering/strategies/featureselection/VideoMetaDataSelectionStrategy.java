@@ -1,22 +1,18 @@
 package br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import br.ufrgs.inf.jlggross.clustering.DataFeature;
 import br.ufrgs.inf.jlggross.clustering.DataObject;
 import br.ufrgs.inf.jlggross.clustering.strategy.FeatureSelectionStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.MetaData;
 import br.ufrgs.inf.jlggross.documentclustering.Term;
-import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 import br.ufrgs.inf.jlggross.documentclustering.VideoMediaFile;
 
 import com.xuggle.xuggler.Global;
 import com.xuggle.xuggler.ICodec;
+import com.xuggle.xuggler.ICodec.ID;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IStream;
 import com.xuggle.xuggler.IStreamCoder;
@@ -65,9 +61,7 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 			videoFile.clearFeatureList();
 			
 			this.extractMetaData(videoFile);
-			
-			//this.tokenize(doc);
-			//this.calculateRelative(doc);
+			this.populateFeatureList(videoFile);
 			
 			this.setProgress((double)++this.processedDocuments/dataObjects.size());
 		}
@@ -77,9 +71,9 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	
 	
 	/**
-	 * Definition: Extract meta data.
+	 * Definition: Extract meta data from each video.
 	 *  
-	 * @param mediaFile : contains a media file.
+	 * @param videoFile : a video media file.
 	 */
 	private void extractMetaData(VideoMediaFile videoFile) {
 		// Create a Xuggler container object
@@ -90,107 +84,91 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	    if (container.open(aVideo.getPath(), IContainer.Type.READ, null) < 0)
 	    	throw new IllegalArgumentException("could not open file: " + aVideo.getPath());
 	    
-	    // query how many streams the call to open found
+	    // Get meta data
 	    int numStreams = container.getNumStreams();
-	    if (numStreams > 2)
-	    	numStreams = 2;
-	    	
+	  
+	    // mediaDuration
 	    if (container.getDuration() == Global.NO_PTS)
 	    	videoFile.setMediaDuration(-1);
 	    else
 	    	videoFile.setMediaDuration(container.getDuration()/1000);
 	    
+	    // mediaFileSize
 	    videoFile.setMediaFileSize(container.getFileSize());
+	    
+	    // mediaBitrate
 	    videoFile.setMediaBitrate(container.getBitRate());
-		videoFile.setNumberStreams(numStreams);
 	    
-	    private String videoCodecType;
-		private int videoWidth;
-		private int videoHeight;
-		private float videoFramerate;
-		
-		//Audio Stream info
-		private String audioCodecType;
-		private String audioLanguage;
-		private String timebase;
-		private int samplerate;	
+	    // numberStreams
+	    if (numStreams > 2)
+	    	videoFile.setNumberStreams(2);
+	    else 
+	    	videoFile.setNumberStreams(1);
 	    
+		boolean audioStream = false;
+		boolean videoStream = false;
 		for (int i = 0; i < numStreams; i++) {
-
 			// Find the stream object
 			IStream stream = container.getStream(i);
-			
 			// Get the pre-configured decoder that can decode this stream;
 			IStreamCoder coder = stream.getStreamCoder();
-	      
-			
-	      System.out.printf("\ttype: %s \n",     coder.getCodecType());
-	      System.out.printf("\tcodec: %s \n",    coder.getCodecID());	      
-	      
-	      if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_AUDIO) {
-	    	  System.out.printf("\tlanguage: %s \n", stream.getLanguage() == null ? "unknown" : stream.getLanguage());
-	    	  System.out.printf("\tsample rate: %d\n", coder.getSampleRate());
-	    	  System.out.printf("\ttimebase: %d/%d \n", stream.getTimeBase().getNumerator(), stream.getTimeBase().getDenominator());
-	        
-	      } else if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO) {
-	    	  System.out.printf("\twidth: %d\n",  coder.getWidth());
-	    	  System.out.printf("\theight: %d\n", coder.getHeight());
-	    	  System.out.printf("\tframe-rate: %5.2f\n", coder.getFrameRate().getDouble());
-	      }
+	      	      
+			if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_AUDIO && !audioStream) {
+				audioStream = true;
+				
+				// audioCodecType
+				videoFile.setAudioCodecType(coder.getCodecID());
+
+				// audioLanguage
+				if (stream.getLanguage() == null)
+					videoFile.setAudioLanguage("unknown");
+				else
+					videoFile.setAudioLanguage(stream.getLanguage());
+				
+				// timebase
+				videoFile.setTimebase(coder.getSampleRate());
+				
+				// samplerate
+				StringBuilder str = new StringBuilder();
+				str.append(stream.getTimeBase().getNumerator() + "/" + stream.getTimeBase().getDenominator());
+				videoFile.setSamplerate(str.toString());
+				
+			} else if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO && !videoStream) {
+				videoStream = true;
+				videoFile.setVideoCodecType(coder.getCodecID());
+				videoFile.setVideoWidth(coder.getWidth());
+				videoFile.setVideoHeight(coder.getHeight());
+				videoFile.setVideoFramerate(coder.getFrameRate().getDouble());
+			}
 	    }
 	}
 	
 	
-	private void tokenize(TextFile doc) {
-		final HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
-		String[] tokens = doc.getContent().toLowerCase()
-				.split("[^\\p{Alnum}]");
-				//.split("[\\s]|[.][^0-9]|[,][^0-9]|[<]|[>]|[\"]|[-]|[(]|[)]|[;]|[:]|[!]|[?]");
-				//.split("[[(]|[)]|[.]|[,]|[;]|[:]|[\"]|[/]|[<]|[>]|[-]]+[[\\s]|[\\n]]*|[\\s]+[[(]|[)]|[.]|[,]|[;]|[:]|[\"]|[/]|[<]|[>]|[-]]*[\\s]*");
-		for (String token : tokens) {
-			if (!token.isEmpty()) {
-				Integer frequency = bagOfWords.get(token);
-				if (frequency == null)
-					frequency = 0;
-				frequency++;
-				bagOfWords.put(token, frequency);
-			}
-		}
+	/**
+	 * Definition: After all the meta data has been extracted there is the need to
+	 * store this information in the Feature set of data, because the similarity 
+	 * algorithm uses this to calculate the similarity between objects.
+	 *  
+	 * @param videoFile : a video media file.
+	 */
+	private void populateFeatureList(VideoMediaFile videoFile) {
 		
-		List<String> terms = new ArrayList<String>(bagOfWords.keySet());
-		Collections.sort(terms, new Comparator<String>() {
-			@Override
-	        public int compare(String term1, String term2) {
-	            return bagOfWords.get(term2) - bagOfWords.get(term1);
-	        }
-	    });
+		videoFile.addFeature(new MetaData("mediaDuration", Long.toString(videoFile.getMediaDuration())));
+		videoFile.addFeature(new MetaData("mediaFileSize", Long.toString(videoFile.getMediaFileSize())));
+		videoFile.addFeature(new MetaData("mediaBitrate", Long.toString(videoFile.getMediaBitrate())));
+		videoFile.addFeature(new MetaData("numberStreams", Integer.toString(videoFile.getNumberStreams())));
 		
-		int count = 500;
-		for (String term : terms) {
-			if (!this.stopWords.contains(term)) {
-				doc.addFeature(new Term(term, bagOfWords.get(term)));
-				count--;
-				if (count == 0) {
-					break;
-				}
-			}
-		}
-	}
-	
-	private void calculateRelative(TextFile doc) {
-		List<DataFeature> features = doc.getFeatureList();
+		// Video Stream info
+		videoFile.addFeature(new MetaData("videoCodecType", videoFile.getVideoCodecType().toString()));
+		videoFile.addFeature(new MetaData("videoWidth", Integer.toString(videoFile.getVideoWidth())));
+		videoFile.addFeature(new MetaData("videoHeight", Integer.toString(videoFile.getVideoHeight())));
+		videoFile.addFeature(new MetaData("videoFramerate", Double.toString(videoFile.getVideoHeight())));
 		
-		double featuresCount = 0;
-		for (DataFeature feature : features) {
-			Term term = (Term) feature;
-			featuresCount += term.getAbsoluteFrequency();
-		}
-
-		for (DataFeature feature : features) {
-			Term term = (Term) feature;
-			double absFrequency = term.getAbsoluteFrequency();
-			term.setRelativeFrequency(absFrequency/featuresCount);
-		}
+		// Audio Stream info
+		videoFile.addFeature(new MetaData("audioCodecType", videoFile.getAudioCodecType().toString()));
+		videoFile.addFeature(new MetaData("audioLanguage", videoFile.getAudioLanguage()));
+		videoFile.addFeature(new MetaData("timebase", Long.toString(videoFile.getTimebase())));
+		videoFile.addFeature(new MetaData("samplerate", videoFile.getSamplerate()));		
 	}
 
 }

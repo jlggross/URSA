@@ -2,6 +2,8 @@ package br.ufrgs.inf.jlggross.documentclustering;
 
 import java.io.File;
 
+import com.xuggle.xuggler.ICodec.ID;
+
 import br.ufrgs.inf.jlggross.clustering.DataFeature;
 
 public class VideoMediaFile extends MediaFile {
@@ -13,16 +15,16 @@ public class VideoMediaFile extends MediaFile {
 	private int numberStreams;
 	
 	// Video Stream info
-	private String videoCodecType;
+	private ID videoCodecType;
 	private int videoWidth;
 	private int videoHeight;
-	private float videoFramerate;
+	private double videoFramerate;
 	
 	// Audio Stream info
-	private String audioCodecType;
+	private ID audioCodecType;
 	private String audioLanguage;
-	private String timebase;
-	private int samplerate;	
+	private long timebase;
+	private String samplerate;	
 	
 	// Constructor
 	public VideoMediaFile(String title, String filepath, int index) {
@@ -62,11 +64,11 @@ public class VideoMediaFile extends MediaFile {
 		this.numberStreams = numberStreams;
 	}
 	
-	public String getVideoCodecType() {
+	public ID getVideoCodecType() {
 		return videoCodecType;
 	}
 
-	public void setVideoCodecType(String videoCodecType) {
+	public void setVideoCodecType(ID videoCodecType) {
 		this.videoCodecType = videoCodecType;
 	}
 
@@ -86,19 +88,19 @@ public class VideoMediaFile extends MediaFile {
 		this.videoHeight = videoHeight;
 	}
 
-	public float getVideoFramerate() {
+	public double getVideoFramerate() {
 		return videoFramerate;
 	}
 
-	public void setVideoFramerate(float videoFramerate) {
+	public void setVideoFramerate(double videoFramerate) {
 		this.videoFramerate = videoFramerate;
 	}
 
-	public String getAudioCodecType() {
+	public ID getAudioCodecType() {
 		return audioCodecType;
 	}
 
-	public void setAudioCodecType(String audioCodecType) {
+	public void setAudioCodecType(ID audioCodecType) {
 		this.audioCodecType = audioCodecType;
 	}
 
@@ -110,19 +112,19 @@ public class VideoMediaFile extends MediaFile {
 		this.audioLanguage = audioLanguage;
 	}
 
-	public String getTimebase() {
+	public long getTimebase() {
 		return timebase;
 	}
 
-	public void setTimebase(String timebase) {
+	public void setTimebase(long timebase) {
 		this.timebase = timebase;
 	}
 
-	public int getSamplerate() {
+	public String getSamplerate() {
 		return samplerate;
 	}
 
-	public void setSamplerate(int samplerate) {
+	public void setSamplerate(String samplerate) {
 		this.samplerate = samplerate;
 	}
 	
