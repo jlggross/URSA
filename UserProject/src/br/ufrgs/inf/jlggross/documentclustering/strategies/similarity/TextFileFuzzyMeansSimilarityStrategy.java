@@ -10,7 +10,7 @@ import br.ufrgs.inf.jlggross.clustering.strategy.SimilarityStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.TextFile;
 import br.ufrgs.inf.jlggross.documentclustering.Term;
 
-public class FuzzyMeansSimilarityStrategy extends SimilarityStrategy {
+public class TextFileFuzzyMeansSimilarityStrategy extends SimilarityStrategy {
 	private final double EPSILON = 0.0000000000000001;
 
 	@Override

@@ -30,7 +30,8 @@ import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldBestSta
 import br.ufrgs.inf.jlggross.documentclustering.strategies.clustering.OldFullStarsClusteringStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.TermSelectionStrategy;
 import br.ufrgs.inf.jlggross.documentclustering.strategies.featureselection.VideoMetaDataSelectionStrategy;
-import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.FuzzyMeansSimilarityStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.TextFileFuzzyMeansSimilarityStrategy;
+import br.ufrgs.inf.jlggross.documentclustering.strategies.similarity.VideoFileSimilarityStrategy;
 
 public class DocumentClustering {
 	
@@ -52,6 +53,7 @@ public class DocumentClustering {
 	private static void TestMediaFiles() {
 		ClusteringProcess process = new ClusteringProcess();
 		process.setFeatureSelectionStrategy(new VideoMetaDataSelectionStrategy());
+		process.setSimilarityStrategy(new VideoFileSimilarityStrategy());
 		
 		// Add data objects
 		String mediapath = "resVideo/";
@@ -66,6 +68,8 @@ public class DocumentClustering {
 
 		// Processing
 		process.dataObjects = process.featureSelectionStrategy.executeFeatureSelection(process.dataObjects);
+		process.similarityMatrix = process.similarityStrategy.executeSimilarity(process.dataObjects);	
+		System.out.print(process.similarityMatrix.toString());
 		
 		for (DataObject dataObject : process.dataObjects) {
 			//VideoMediaFile aVideo = (VideoMediaFile) dataObject; 
@@ -87,7 +91,7 @@ public class DocumentClustering {
 		stopwords.addAll(getStopwords("vogais"));
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
-		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
+		process.setSimilarityStrategy(new TextFileFuzzyMeansSimilarityStrategy());
 		process.setClusteringStrategy(new BestStarClusteringStrategy(0.10));
 		
 		try { // Add data objects (documents!).
@@ -140,7 +144,7 @@ public class DocumentClustering {
 		stopwords.addAll(getStopwords("vogais"));
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
-		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
+		process.setSimilarityStrategy(new TextFileFuzzyMeansSimilarityStrategy());
 		process.setClusteringStrategy(new BestStarClusteringStrategy(0.03));
 		
 		try { // Add data objects (documents!).
@@ -438,7 +442,7 @@ public class DocumentClustering {
 		
 		// Register the strategies that will be used.
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
-		process.setSimilarityStrategy(new FuzzyMeansSimilarityStrategy());
+		process.setSimilarityStrategy(new TextFileFuzzyMeansSimilarityStrategy());
 		//process.setClusteringStrategy(new CliquesClusteringStrategy(1.0));
 		//process.setClusteringStrategy(new StarsClusteringStrategy(1.0));
 		//process.setClusteringStrategy(new FullStarsClusteringStrategy(1.0));
