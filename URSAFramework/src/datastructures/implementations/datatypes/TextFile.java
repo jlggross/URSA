@@ -3,7 +3,6 @@ package datastructures.implementations.datatypes;
 import datastructures.core.DataFeature;
 import datastructures.core.DataObject;
 
-
 public class TextFile extends DataObject {
 	private String title;
 	private String content;

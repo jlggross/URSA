@@ -8,9 +8,23 @@ import datastructures.core.Matrix2D;
 import datastructures.core.MetaData;
 import datastructures.implementations.datatypes.AudioMediaFile;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * AudioFile Similarity Strategy
+ * 
+ * The similarity is calculated by comparing two objects. The similarity gets higher for every 
+ * information that both objects share equally.
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class AudioFileSimilarityStrategy extends SimilarityStrategy {
 
-	@Override
+	/**
+	 * Definition: AudioFile Similarity core algorithm.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 */
 	public Matrix2D executeSimilarity(List<DataObject> dataObjects) {
 		int objectsCount = dataObjects.size();
 		Matrix2D similarityMatrix = new Matrix2D(objectsCount);
@@ -78,5 +92,4 @@ public class AudioFileSimilarityStrategy extends SimilarityStrategy {
 		
 		return similarityMatrix;
 	}
-
 }

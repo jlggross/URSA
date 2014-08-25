@@ -3,6 +3,7 @@ package clusteringstrategies.implementation.clusteranalysis;
 import java.util.ArrayList;
 import java.util.List;
 
+import utility.clusteranalysis.ClusterAnalysisUtility;
 import clusteringstrategies.core.AnalysisStrategy;
 import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
@@ -10,7 +11,9 @@ import datastructures.implementations.datatypes.TextFile;
 
 /* ---------------------------------------------------------------------------------
  * 
- * Entropy: The degree to which each cluster consists of objects of a single class.
+ * Entropy
+ * 
+ * The degree to which each cluster consists of objects of a single class.
  * For each cluster, the class distribution of the data is calculated first, i.e.,
  * for cluster i we compute pij, the probability that a member of cluster i belongs
  * to class j as pij = mij / mi, where mi is the number of objects in cluster i and
@@ -43,7 +46,7 @@ import datastructures.implementations.datatypes.TextFile;
 public class EntropyAnalysisStrategy extends AnalysisStrategy {
 
 	List<List<String>> dataClasses;
-	
+		
 	/**
 	 * Definition: Entropy Analysis Constructor 
 	 * 
@@ -53,7 +56,7 @@ public class EntropyAnalysisStrategy extends AnalysisStrategy {
 	public EntropyAnalysisStrategy(String filename) {
 		// Initialize the data classes
 		this.dataClasses = new ArrayList<List<String>>();
-		this.dataClasses = FmeasureAnalysisStrategy.loadDataClasses(filename);
+		this.dataClasses = ClusterAnalysisUtility.loadDataClasses(filename);
 	}
 	
 	
@@ -65,7 +68,7 @@ public class EntropyAnalysisStrategy extends AnalysisStrategy {
 	 * clustering algorithm.  
 	 */
 	@Override
-	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
+	public void executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
 		// First gets the data objects names of each cluster
 		List<List<String>> clusters = new ArrayList<List<String>>();
 		for (DataCluster c : dataClusters) {
@@ -110,6 +113,6 @@ public class EntropyAnalysisStrategy extends AnalysisStrategy {
 		
 		System.out.println("\nTotal Entropy:\t" + totalEntropy);
 				
-		return 0;
+		return;
 	}
 }

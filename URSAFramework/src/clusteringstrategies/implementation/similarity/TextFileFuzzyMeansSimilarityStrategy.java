@@ -10,10 +10,25 @@ import datastructures.core.Matrix2D;
 import datastructures.core.Term;
 import datastructures.implementations.datatypes.TextFile;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * TextFile FuzzyMeans Similarity Strategy
+ * 
+ * In general terms, checks how many words two objects share in common to calculate the similarity
+ * between them.
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class TextFileFuzzyMeansSimilarityStrategy extends SimilarityStrategy {
+	
 	private final double EPSILON = 0.0000000000000001;
 
-	@Override
+	/**
+	 * Definition: TextFile Similarity core algorithm.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 */
 	public Matrix2D executeSimilarity(List<DataObject> dataObjects) {
 		int objectsCount = dataObjects.size();
 		Matrix2D similarityMatrix = new Matrix2D(objectsCount);

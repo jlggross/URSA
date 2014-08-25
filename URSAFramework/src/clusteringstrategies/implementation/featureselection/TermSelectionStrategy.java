@@ -13,24 +13,35 @@ import datastructures.core.DataObject;
 import datastructures.core.Term;
 import datastructures.implementations.datatypes.TextFile;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * Term selection stragey
+ * 
+ * Extract term by term of a set of text files. For every term of every text dataObject a new
+ * variable is created, storing the name of the term and how many times it appears in the file.
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class TermSelectionStrategy extends FeatureSelectionStrategy {
+	
 	private Set<String> stopWords;
 	private int processedDocuments;
 	private int totalDocuments;
 	
+	/**
+	 * Definition: Term Selection Constructor
+	 */
 	public TermSelectionStrategy(Set<String> stopWords) {
 		this.stopWords = stopWords;
 	}
 	
-	public int getProcessedDocuments() {
-		return this.processedDocuments;
-	}
 	
-	public int getTotalDocuments() {
-		return this.totalDocuments;
-	}
-
-	@Override
+	/**
+	 * Definition: Term selection core execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 */
 	public List<DataObject> executeFeatureSelection(List<DataObject> dataObjects) {
 		this.processedDocuments = 0;
 		this.totalDocuments = dataObjects.size();
@@ -47,6 +58,12 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		return dataObjects;
 	}
 	
+	
+	/**
+	 * Definition: Given a text file, tokenize its content. 
+	 * 
+	 * @param doc : a dataobject of type TextFile.
+	 */
 	private void tokenize(TextFile doc) {
 		final HashMap<String, Integer> bagOfWords = new HashMap<String, Integer>();
 		String[] tokens = doc.getContent().toLowerCase()
@@ -83,6 +100,12 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 		}
 	}
 	
+	
+	/**
+	 * Definition: Calculate the relative occurrence of the terms in the textfile. 
+	 * 
+	 * @param doc : a dataobject of type TextFile.
+	 */
 	private void calculateRelative(TextFile doc) {
 		List<DataFeature> features = doc.getFeatureList();
 		
@@ -98,20 +121,4 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 			term.setRelativeFrequency(absFrequency/featuresCount);
 		}
 	}
-	
-	/*
-	private void dumpSelectedTerms(TextFile doc) {
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("data/selected_terms.txt", true));
-			for (DataFeature feature : doc.getFeatureList()) {
-				Term term = (Term) feature;
-				writer.append(term.getValue() + "(" + term.getAbsoluteFrequency() + ")").append("\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	*/
-
 }

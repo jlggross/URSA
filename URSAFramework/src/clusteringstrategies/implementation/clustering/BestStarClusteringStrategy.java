@@ -22,6 +22,7 @@ import datastructures.core.Matrix2D;
  */
 
 public class BestStarClusteringStrategy extends ClusteringStrategy {
+	
 	private double threshold;
 	
 	/**
@@ -120,7 +121,7 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		for (int i = 0; i < numClusters; i++) {
 			dataClusters.add(clusters[i]);		
-		}
+		}			
 		
 		return dataClusters;
 	}

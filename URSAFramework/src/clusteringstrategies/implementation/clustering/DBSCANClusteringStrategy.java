@@ -48,12 +48,12 @@ import datastructures.core.Matrix2D;
  */
 
 public class DBSCANClusteringStrategy extends ClusteringStrategy {
+	
 	private double epsilon;
 	private int minObjs; 
 	private int NOISE = -999;
 	private int VISITED = 999; 
 	private int UNVISITED = 100;
-	
 	
 	/**
 	 * Definition: DBSCAN Constructor.
@@ -121,7 +121,15 @@ public class DBSCANClusteringStrategy extends ClusteringStrategy {
 	
 	
 	/**
-	 * Get the indexes of the epsilon-neighborhood of a given object (indexOfObjsCluterStarter). 
+	 * Definition: Get the indexes of the epsilon-neighborhood of a given object 
+	 * (indexOfObjsCluterStarter). 
+	 * 
+	 * @param indexOfObjsClusterStarter : index of the object to which the neighborhood will
+	 * be calculated.
+	 * @param similarityEpsilon : 1.0 - epsilon.
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of 
+	 * objects.  
 	 */
 	private List<Integer> regionQuery(int indexOfObjsClusterStarter, double similarityEpsilon, 
 			List<DataObject> dataObjects, Matrix2D similarityMatrix) {
@@ -155,7 +163,16 @@ public class DBSCANClusteringStrategy extends ClusteringStrategy {
 	
 	
 	/**
-	 * Given a data object that has a neighborhood of similar data objects, creates a new cluster. 
+	 * Definition:  Given a data object that has a neighborhood of similar data objects, 
+	 * creates a new cluster. 
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of
+	 * objects.
+	 * @param neighborObjs : list of indexes of objects that belong to the neighborhood of and
+	 * object.
+	 * @param clusterNumber : the number of the cluster being calculated.
+	 * @param dataObjectsStatus : status of all the dataObjects (visited, unvisited, noise).  
 	 */
 	private DataCluster createCluster(List<DataObject> dataObjects, Matrix2D similarityMatrix, 
 			List<Integer> neighborObjs, int clusterNumber, int[] dataObjectsStatus) {
@@ -174,5 +191,3 @@ public class DBSCANClusteringStrategy extends ClusteringStrategy {
 		return dataCluster;
 	}
 }
-
-

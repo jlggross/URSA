@@ -143,7 +143,6 @@ public class ClusteringProcess extends Observable implements Runnable, Observer 
 			this.setChanged();
 			this.notifyObservers();
 		}
-		
 	}
 
 }

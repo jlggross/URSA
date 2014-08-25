@@ -26,6 +26,7 @@ import datastructures.core.Pair;
  */
 
 public class KmeansClusteringStrategy extends ClusteringStrategy {
+	
 	private int numCentroids;
 	private int numObjects;
 	private int iterations;	
@@ -210,7 +211,6 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 	}
 	
 	
-	
 	/**
 	 * Definition: Choose centroids using Single Pass Seed Selection (SPSS) Algorithm.
 	 * 
@@ -309,7 +309,5 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 		} while (centroidsIndex.size() < k);
 		
 		return centroidsIndex;
-	}
-	
-	
+	}	
 }

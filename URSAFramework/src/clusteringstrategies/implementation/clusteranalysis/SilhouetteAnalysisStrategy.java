@@ -7,8 +7,23 @@ import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
 import datastructures.core.Matrix2D;
 
+/* ---------------------------------------------------------------------------------
+ * 
+ * Silhouette
+ * 
+ * ---------------------------------------------------------------------------------
+ */
+
 public class SilhouetteAnalysisStrategy extends AnalysisStrategy {
 
+	/**
+	 * Definition: Silhouette core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param dataClusters : list of data clusters. These clusters were calculated using a 
+	 * clustering algorithm. 
+	 * @param similarityMatrix : similarity matrix calculated by a similarity algorithm. 
+	 */
 	@Override
 	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
 		double silhouette = 0.0;

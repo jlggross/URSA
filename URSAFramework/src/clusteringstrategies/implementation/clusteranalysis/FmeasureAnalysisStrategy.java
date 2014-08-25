@@ -1,11 +1,9 @@
 package clusteringstrategies.implementation.clusteranalysis;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import utility.clusteranalysis.ClusterAnalysisUtility;
 import clusteringstrategies.core.AnalysisStrategy;
 import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
@@ -61,7 +59,7 @@ import datastructures.implementations.datatypes.TextFile;
 public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 
 	List<List<String>> dataClasses;
-	
+		
 	/**
 	 * Definition: F-Measure Analysis Constructor
 	 * 
@@ -71,7 +69,7 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 	public FmeasureAnalysisStrategy(String filename) {
 		// Initialize the data classes
 		this.dataClasses = new ArrayList<List<String>>();
-		this.dataClasses = FmeasureAnalysisStrategy.loadDataClasses(filename);
+		this.dataClasses = ClusterAnalysisUtility.loadDataClasses(filename);
 	}
 	
 	
@@ -83,7 +81,7 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 	 * clustering algorithm.  
 	 */
 	@Override
-	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
+	public void executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
 		
 		// First gets the data objects names of each cluster
 		List<List<String>> clusters = new ArrayList<List<String>>();
@@ -137,69 +135,17 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 			clusterIndex++;
 		}
 		
-		return 0;
+		return;
 	}
 	
 	
 	/**
-	 * Definition: Load the data classes.
+	 * Definition: F-Measure calculus.
 	 * 
-	 * @param filename : refers to a file with the expected classes. 
+	 * @param precision : precision of a cluster.
+	 * @param recall : recall of a cluster.  
 	 */
-	public static List<List<String>> loadDataClasses(String filename) {
-		
-		List<List<String>> classes = new ArrayList<List<String>>();
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
-			String line = "";
-			while (null != (line = reader.readLine())) {
-				if (!line.isEmpty()) {
-					
-					String[] parse = line.split(": ");
-					List<String> newClass = new ArrayList<String>();
-					int count = Integer.valueOf(parse[1]);
-					
-					for (int i = 0; i < count; i++) {
-						line = reader.readLine();
-						newClass.add(line);
-					}
-					
-					line = reader.readLine();
-					classes.add(newClass);
-				}
-			}
-			reader.close();
-		} catch (IOException e) {
-			System.out.println("IOException in function loadMatrix of class Matrix2D.java");
-			e.printStackTrace();
-		}
-		
-		return classes;
-	}
-	
-	
 	private double fmeasure(double precision, double recall) {
 		return 2 * ((precision * recall) / (precision + recall));
 	}
-	
-	/* TODO
-	public double microaverageRecall(List<DataCluster> dataClusters, List<DataCluster> dataClasses) {
-		double clustered = 0.0;
-		Set<DataObject> classifiedObjects = new HashSet<DataObject>();
-		
-		for (DataCluster cluster : dataClusters) {
-			clustered += cluster.getDataObjects().size();
-		}
-		
-		for (DataCluster clazz : dataClasses) {
-			classifiedObjects.addAll(clazz.getDataObjects());
-		}
-		
-		double classified = classifiedObjects.size();
-		
-		return clustered / classified;
-	}
-	*/
-
 }

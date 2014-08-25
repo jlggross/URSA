@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import main.ClusteringProcess;
-import utility.ExtractReuters;
+import utility.featureselection.ReutersSGMtoTXT;
 import clusteringstrategies.implementation.clusteranalysis.FmeasureAnalysisStrategy;
 import clusteringstrategies.implementation.clusteranalysis.PurityAnalysisStrategy;
 import clusteringstrategies.implementation.clusteranalysis.SilhouetteAnalysisStrategy;
@@ -470,7 +470,7 @@ public class DocumentClustering {
 		
 		// Run this code to extract reuters documents from .sgm files located in data/reuters-sgm
 		try {
-			ExtractReuters.main(null);
+			ReutersSGMtoTXT.main(null);
 		} catch (IOException e1) {
 			System.out.println("ExtractReuters.main : reuters documents extracted to data/reuters-extracted.");
 			e1.printStackTrace();

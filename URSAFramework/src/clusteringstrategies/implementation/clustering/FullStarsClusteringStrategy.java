@@ -19,8 +19,8 @@ import datastructures.core.Matrix2D;
  * -----------------------------------------------------------------------------------------------
  */
 
-
 public class FullStarsClusteringStrategy extends ClusteringStrategy {
+	
 	private double threshold;
 	
 	/**

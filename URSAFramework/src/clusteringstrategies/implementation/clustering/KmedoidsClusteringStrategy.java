@@ -26,6 +26,7 @@ import datastructures.core.Pair;
  */
 
 public class KmedoidsClusteringStrategy extends ClusteringStrategy {
+	
 	private int centroidsNum;
 	private int iterations;
 	private int centroidStrategy;
@@ -378,6 +379,5 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 		}
 		
 		return currentIndexCentroid;
-	}
-	
+	}	
 }

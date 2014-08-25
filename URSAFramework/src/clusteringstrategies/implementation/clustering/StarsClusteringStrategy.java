@@ -8,14 +8,37 @@ import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
 import datastructures.core.Matrix2D;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * Stars algorithm:
+ * 1. Select an object that is not part of any cluster and put it as the center of a new cluster.
+ * 2. Put all the objects similar to it in the new cluster. 
+ * 3. If there are objects still not in any cluster, repeat steps 1 and 2.
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class StarsClusteringStrategy extends ClusteringStrategy {
+	
 	private double threshold;
 	
+	/**
+	 * Definition: Stars Constructor
+	 * 
+	 * @param threshold : indicates the minimum similarity that an
+	 * object need to be part of a cluster.
+	 */
 	public StarsClusteringStrategy(double threshold) {
 		this.threshold = threshold;
 	}
 	
-	@Override
+	
+	/**
+	 * Definition: Stars core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
+	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		List<DataObject> allocatedObjects = new ArrayList<DataObject>();
@@ -48,14 +71,6 @@ public class StarsClusteringStrategy extends ClusteringStrategy {
 				dataClusters.add(star);
 			}
 		}
-		
-		// Remove clusters of one document.
-		/*List<DataCluster> realClusters = new ArrayList<DataCluster>();
-		for (DataCluster cluster : dataClusters) {
-			if (cluster.getDataObjects().size() > 1) {
-				realClusters.add(cluster);
-			}
-		}*/
 		
 		return dataClusters;
 	}

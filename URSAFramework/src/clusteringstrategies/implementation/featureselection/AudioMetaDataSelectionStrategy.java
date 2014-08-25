@@ -33,21 +33,20 @@ import datastructures.implementations.datatypes.AudioMediaFile;
  */
 
 public class AudioMetaDataSelectionStrategy extends FeatureSelectionStrategy {
+	
 	private int processedDocuments;	
 	
 	/**
-	 * Definition: VideoMetaDataSelectionStrategy
+	 * Definition: Audio Meta Data Selection Strategy Constructor
 	 */
-	public AudioMetaDataSelectionStrategy() {
-	}
+	public AudioMetaDataSelectionStrategy() {}
 
 	
 	/**
-	 * Definition: The extraction if meta data begins. A set of meta data is captured.
+	 * Definition: Extraction of meta data. A set of meta data is captured.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 */
-	@Override
 	public List<DataObject> executeFeatureSelection(List<DataObject> dataObjects) {
 		this.processedDocuments = 0;
 				
@@ -151,5 +150,4 @@ public class AudioMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 		audioFile.addFeature(new MetaData("track", Integer.toString(audioFile.getTrack())));
 		audioFile.addFeature(new MetaData("date", Integer.toString(audioFile.getDate())));		
 	}
-
 }

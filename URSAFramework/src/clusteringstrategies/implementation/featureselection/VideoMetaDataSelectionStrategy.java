@@ -35,18 +35,16 @@ public class VideoMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	private int processedDocuments;
 		
 	/**
-	 * Definition: VideoMetaDataSelectionStrategy
+	 * Definition: Video Meta Data Selection Strategy Constructor
 	 */
-	public VideoMetaDataSelectionStrategy() {
-	}
+	public VideoMetaDataSelectionStrategy() {}
 
 	
 	/**
-	 * Definition: The extraction if meta data begins. A set of meta data is captured.
+	 * Definition: Extraction of meta data. A set of meta data is captured.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 */
-	@Override
 	public List<DataObject> executeFeatureSelection(List<DataObject> dataObjects) {
 		this.processedDocuments = 0;
 				

@@ -8,14 +8,40 @@ import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
 import datastructures.core.Matrix2D;
 
+/* -----------------------------------------------------------------------------------------------
+ *  
+ * Cliques algorithm:
+ * 1. Select an object that is not part of any cluster and add it to a new cluster.
+ * 2. Select another object and compare both.
+ * 3. If the selected object is similar to all the other objects of the cluster, add it to the
+ * cluster.
+ * 4. While there are objects to be compared, go back to 2.
+ * 5. While there are objects not added to any cluster, go back to 1. 
+ * 
+ * -----------------------------------------------------------------------------------------------
+ */
+
 public class CliquesClusteringStrategy extends ClusteringStrategy {
+	
 	private double threshold;
 	
+	/**
+	 * Definition: Cliques Constructor
+	 * 
+	 * @param threshold : indicates the minimum similarity that an
+	 * object need to be part of a cluster.
+	 */
 	public CliquesClusteringStrategy(double threshold) {
 		this.threshold = threshold;
 	}
 
-	@Override
+	
+	/**
+	 * Definition: Cliques core algorithm execution.
+	 * 
+	 * @param dataObjects : list of data objects.
+	 * @param similarityMatrix : similarity matrix with the similarity between every pair of objects.  
+	 */
 	public List<DataCluster> executeClustering(List<DataObject> dataObjects, Matrix2D similarityMatrix) {
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		List<DataObject> allocatedObjects = new ArrayList<DataObject>();
@@ -63,5 +89,4 @@ public class CliquesClusteringStrategy extends ClusteringStrategy {
 		
 		return dataClusters;
 	}
-
 }

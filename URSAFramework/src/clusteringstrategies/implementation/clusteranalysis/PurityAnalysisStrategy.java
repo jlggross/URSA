@@ -3,6 +3,7 @@ package clusteringstrategies.implementation.clusteranalysis;
 import java.util.ArrayList;
 import java.util.List;
 
+import utility.clusteranalysis.ClusterAnalysisUtility;
 import clusteringstrategies.core.AnalysisStrategy;
 import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
@@ -10,7 +11,9 @@ import datastructures.implementations.datatypes.TextFile;
 
 /* ---------------------------------------------------------------------------------
  * 
- * Purity: Measures the extent to which a cluster contains objects of a single class.
+ * Purity
+ * 
+ * Measures the extent to which a cluster contains objects of a single class.
  * The purity of cluster i is pi = max pij, where pij is the probability that a member
  * of cluster i belongs to class j. The overall purity of a clustering is,
  * 
@@ -32,7 +35,7 @@ import datastructures.implementations.datatypes.TextFile;
 public class PurityAnalysisStrategy extends AnalysisStrategy {
 
 	List<List<String>> dataClasses;
-	
+		
 	/**
 	 * Definition: Purity Analysis Constructor 
 	 * 
@@ -42,7 +45,7 @@ public class PurityAnalysisStrategy extends AnalysisStrategy {
 	public PurityAnalysisStrategy(String filename) {
 		// Initialize the data classes
 		this.dataClasses = new ArrayList<List<String>>();
-		this.dataClasses = FmeasureAnalysisStrategy.loadDataClasses(filename);
+		this.dataClasses = ClusterAnalysisUtility.loadDataClasses(filename);
 	}
 	
 	
@@ -54,7 +57,7 @@ public class PurityAnalysisStrategy extends AnalysisStrategy {
 	 * clustering algorithm.  
 	 */
 	@Override
-	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
+	public void executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters) {
 		// First gets the data objects names of each cluster
 		List<List<String>> clusters = new ArrayList<List<String>>();
 		for (DataCluster c : dataClusters) {
@@ -100,6 +103,6 @@ public class PurityAnalysisStrategy extends AnalysisStrategy {
 		
 		System.out.println("\nTotal Purity:\t" + totalPurity);
 				
-		return 0;
+		return;
 	}
 }

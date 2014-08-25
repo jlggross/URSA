@@ -8,8 +8,8 @@ import datastructures.core.Matrix2D;
 
 public abstract class AnalysisStrategy extends BaseStrategy {
 
-	public double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters) {
-		return 0;
+	public void executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters) {
+		return;
 	}
 	
 	public double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
