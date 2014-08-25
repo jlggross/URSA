@@ -14,20 +14,20 @@ import java.util.List;
 import java.util.Set;
 
 import main.ClusteringProcess;
+import mystrategies.clustering.MyClusteringStrategy;
+import mystrategies.featureselection.MySelectionStrategy;
+import mystrategies.similarity.MySimilarityStrategy;
 import utility.featureselection.ReutersSGMtoTXT;
 import clusteringstrategies.implementation.clusteranalysis.FmeasureAnalysisStrategy;
 import clusteringstrategies.implementation.clusteranalysis.PurityAnalysisStrategy;
 import clusteringstrategies.implementation.clusteranalysis.SilhouetteAnalysisStrategy;
 import clusteringstrategies.implementation.clustering.AgglomerativeHierarchicalClusteringStrategy;
-import clusteringstrategies.implementation.clustering.BestStarClusteringStrategy;
 import clusteringstrategies.implementation.clustering.DBSCANClusteringStrategy;
 import clusteringstrategies.implementation.clustering.FullStarsClusteringStrategy;
 import clusteringstrategies.implementation.clustering.KmeansClusteringStrategy;
 import clusteringstrategies.implementation.clustering.KmedoidsClusteringStrategy;
-import clusteringstrategies.implementation.featureselection.AudioMetaDataSelectionStrategy;
 import clusteringstrategies.implementation.featureselection.TermSelectionStrategy;
 import clusteringstrategies.implementation.featureselection.VideoMetaDataSelectionStrategy;
-import clusteringstrategies.implementation.similarity.AudioFileSimilarityStrategy;
 import clusteringstrategies.implementation.similarity.TextFileFuzzyMeansSimilarityStrategy;
 import clusteringstrategies.implementation.similarity.VideoFileSimilarityStrategy;
 import datastructures.core.DataCluster;
@@ -57,8 +57,8 @@ public class DocumentClustering {
 	 * */
 	private static void TestAudioFiles() {
 		ClusteringProcess process = new ClusteringProcess();
-		process.setFeatureSelectionStrategy(new AudioMetaDataSelectionStrategy());
-		process.setSimilarityStrategy(new AudioFileSimilarityStrategy());
+		process.setFeatureSelectionStrategy(new MySelectionStrategy());
+		process.setSimilarityStrategy(new MySimilarityStrategy());
 		
 		// Add data objects
 		String mediapath = "data/resAudio/";
@@ -128,7 +128,7 @@ public class DocumentClustering {
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
 		process.setSimilarityStrategy(new TextFileFuzzyMeansSimilarityStrategy());
-		process.setClusteringStrategy(new BestStarClusteringStrategy(0.10));
+		process.setClusteringStrategy(new MyClusteringStrategy(0.10));
 		
 		try { // Add data objects (documents!).
 			File docFolder = new File("data/wikipedia12");
@@ -181,7 +181,7 @@ public class DocumentClustering {
 		
 		process.setFeatureSelectionStrategy(new TermSelectionStrategy(stopwords));
 		process.setSimilarityStrategy(new TextFileFuzzyMeansSimilarityStrategy());
-		process.setClusteringStrategy(new BestStarClusteringStrategy(0.03));
+		process.setClusteringStrategy(new MyClusteringStrategy(0.03));
 		
 		try { // Add data objects (documents!).
 			File docFolder = new File("data/wikipedia13");
@@ -352,7 +352,7 @@ public class DocumentClustering {
 			double GSM) {
 		
 		// Set and run Best Star Clustering Strategy 
-		process.setClusteringStrategy(new BestStarClusteringStrategy(GSM));
+		process.setClusteringStrategy(new MyClusteringStrategy(GSM));
 		process.dataClusters = process.clusteringStrategy.executeClustering(process.dataObjects, similarityMatrix);
 				
 		// Write clusters on file
@@ -462,7 +462,7 @@ public class DocumentClustering {
 		//process.setClusteringStrategy(new CliquesClusteringStrategy(1.0));
 		//process.setClusteringStrategy(new StarsClusteringStrategy(1.0));
 		//process.setClusteringStrategy(new FullStarsClusteringStrategy(1.0));
-		process.setClusteringStrategy(new BestStarClusteringStrategy(0.05));
+		process.setClusteringStrategy(new MyClusteringStrategy(0.05));
 		
 		// Register the observers.
 		process.addObserver(new ConsoleObserver());

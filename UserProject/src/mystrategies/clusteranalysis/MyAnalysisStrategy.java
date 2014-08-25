@@ -1,4 +1,4 @@
-package clusteringstrategies.implementation.clusteranalysis;
+package mystrategies.clusteranalysis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,12 @@ import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
 import datastructures.core.Matrix2D;
 
-
 public class MyAnalysisStrategy extends AnalysisStrategy {
 
 	List<List<String>> dataClasses;
 	
 	/**
-	 * Definition: Entropy Analysis Constructor 
+	 * Definition: My analysis algorithm constructor 
 	 * 
 	 * @param filename : refers to a file with the expected classes. These classes
 	 * are a reference for the clusters that the clustering algorithm must return. 
@@ -28,7 +27,7 @@ public class MyAnalysisStrategy extends AnalysisStrategy {
 	
 	
 	/**
-	 * Definition: Core algorithm execution.
+	 * Definition: My analysis algorithm execution.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 * @param dataClusters : list of data clusters. These clusters were calculated using a 
@@ -42,7 +41,7 @@ public class MyAnalysisStrategy extends AnalysisStrategy {
 	
 	
 	/**
-	 * Definition: Core algorithm execution.
+	 * Definition: My analysis algorithm execution.
 	 * 
 	 * @param dataObjects : list of data objects.
 	 * @param dataClusters : list of data clusters. These clusters were calculated using a 
