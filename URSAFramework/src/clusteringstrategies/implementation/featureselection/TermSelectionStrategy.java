@@ -51,7 +51,6 @@ public class TermSelectionStrategy extends FeatureSelectionStrategy {
 			doc.clearFeatureList();
 			this.tokenize(doc);
 			this.calculateRelative(doc);
-			//this.dumpSelectedTerms(doc);
 			this.setProgress((double)++this.processedDocuments/dataObjects.size());
 		}
 		
