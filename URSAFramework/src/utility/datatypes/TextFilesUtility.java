@@ -32,8 +32,7 @@ public class TextFilesUtility {
 				process.addDataObject(new TextFile(name[name.length - 1],
 						content.toString(), index));
 				index++;
-				System.out
-						.println("DataObject added: " + name[name.length - 1]);
+				System.out.println("DataObject added: " + name[name.length - 1]);
 				reader.close();
 			}
 		} catch (FileNotFoundException e) {
