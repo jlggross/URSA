@@ -12,7 +12,7 @@ public abstract class AnalysisStrategy extends BaseStrategy {
 		return;
 	}
 	
-	public double executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
-		return 0;
+	public void executeAnalysis(List<DataObject> objects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
+		return;
 	}
 }

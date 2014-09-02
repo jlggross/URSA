@@ -25,7 +25,7 @@ public class SilhouetteAnalysisStrategy extends AnalysisStrategy {
 	 * @param similarityMatrix : similarity matrix calculated by a similarity algorithm. 
 	 */
 	@Override
-	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
+	public void executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
 		double silhouette = 0.0;
 		
 		for (DataCluster cluster : dataClusters) {
@@ -69,9 +69,11 @@ public class SilhouetteAnalysisStrategy extends AnalysisStrategy {
 			}
 			silhouette += (clusterAi / cluster.getDataObjects().size());
 		}
-		silhouette /= dataClusters.size();
 		
-		return silhouette;
+		silhouette /= dataClusters.size();		
+		System.out.println("Total Silhouette: " + silhouette);
+		
+		return;
 	}
 
 }

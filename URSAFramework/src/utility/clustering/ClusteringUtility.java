@@ -3,6 +3,8 @@ package utility.clustering;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.ClusteringProcess;
 import datastructures.core.DataCluster;
@@ -27,7 +29,7 @@ public class ClusteringUtility {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
 					"output/clusters-" + identifier + "-" + strategy + ".txt"));
 			String s;
-			System.out.println("Clusters: ");
+			System.out.println("\nClusters: ");
 			for (DataCluster cluster : process.getDataClusters()) {
 				s = Integer.toString(cluster.getDataObjects().size()) + "\n";
 				System.out.printf(s);
@@ -62,7 +64,7 @@ public class ClusteringUtility {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
 					"output/clusters-" + identifier + "-" + strategy + ".txt"));
 			String s;
-			System.out.println("Clusters: ");
+			System.out.println("\nClusters: ");
 			for (DataCluster cluster : process.getDataClusters()) {
 				s = Integer.toString(cluster.getDataObjects().size()) + "\n";
 				System.out.printf(s);
@@ -91,4 +93,36 @@ public class ClusteringUtility {
 		}
 	}
 	
+	
+	/**
+	 * Definition: Given a clustering process, print the clusters calculated. 
+	 * process.clusteringStrategy.executeClustering() must have been executed
+	 * previously.
+	 * 
+	 * @param process : the object for the clustering process.
+	 * @param type : file type - text, audio or video.
+	 */
+	public static void printClusters(ClusteringProcess process, String type) {
+		System.out.println("\nClusters: ");
+		
+		for (DataCluster dc : process.dataClusters) {
+			List<DataObject> dataObjects = new ArrayList<DataObject>();
+			dataObjects = dc.getDataObjects();
+			
+			System.out.println(Integer.toString(dc.getDataObjects().size()));
+			
+			for (DataObject d : dataObjects) {
+				if (type.equals("text")) {
+					TextFile doc = (TextFile) d;
+					System.out.println(doc.getTitle());
+				} else if (type.equals("audio")) {
+					AudioMediaFile doc = (AudioMediaFile) d;
+					System.out.println(doc.getTitle());
+				} else if (type.equals("video")) {
+					VideoMediaFile doc = (VideoMediaFile) d;
+					System.out.println(doc.getTitle());
+				}
+			}
+		}
+	}
 }

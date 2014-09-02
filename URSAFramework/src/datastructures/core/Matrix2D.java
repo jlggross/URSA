@@ -40,11 +40,17 @@ public class Matrix2D {
 		StringBuilder str = new StringBuilder();
     	for (int i = 0; i < this.width; i++) {
     		for (int j = 0; j < this.width; j++) {
+    			if (i == j || i > j)
+    				str.append(";;;;; ");
+    			else
+    				str.append(String.format("%.3f ", this.matrix[i][j]));
+    			/*
     			if (this.matrix[i][j] >= 0.01) {
-        			str.append(String.format("%.2f ", this.matrix[i][j]));
+        			str.append(String.format("%.3f ", this.matrix[i][j]));
     			} else {
     				str.append(";;;; ");
     			}
+    			*/
     		}
     		str.append("\n");
     	}
@@ -67,7 +73,7 @@ public class Matrix2D {
 				line = line.replace(",", ".");
 				String[] tokens = line.split(" ");
 				for (; i < numberOfFiles; i++) {
-					if (tokens[i].equals(";;;;"))
+					if (tokens[i].equals(";;;;;"))
 						if (i == j)
 							this.set(i, j, 1.0);
 						else

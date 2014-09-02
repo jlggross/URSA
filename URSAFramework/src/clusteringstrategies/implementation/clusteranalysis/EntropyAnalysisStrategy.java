@@ -104,14 +104,14 @@ public class EntropyAnalysisStrategy extends AnalysisStrategy {
 			}
 			
 			entropy[clusterIndex] = entropy[clusterIndex] * (-1);
-			totalEntropy = (double) (cluster.size() / dataObjects.size()) * entropy[clusterIndex];
+			totalEntropy += (double) (cluster.size() / dataObjects.size()) * entropy[clusterIndex];
 			
-			System.out.println("Cluster " + clusterIndex);
-			System.out.println("\tEntropy:\t" + entropy[clusterIndex]);
+			//System.out.println("Cluster " + clusterIndex);
+			//System.out.println("\tEntropy:\t" + entropy[clusterIndex]);
 			clusterIndex++;
 		}
 		
-		System.out.println("\nTotal Entropy:\t" + totalEntropy);
+		System.out.println("Total Entropy:\t" + totalEntropy);
 				
 		return;
 	}

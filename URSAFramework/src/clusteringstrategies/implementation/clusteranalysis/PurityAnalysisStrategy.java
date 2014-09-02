@@ -96,12 +96,12 @@ public class PurityAnalysisStrategy extends AnalysisStrategy {
 			}
 			
 			totalPurity += ((double) cluster.size() / dataObjects.size()) * purity[clusterIndex];
-			System.out.println("Cluster " + clusterIndex);
-			System.out.println("\tPurity:\t" + purity[clusterIndex]);
+			//System.out.println("Cluster " + clusterIndex);
+			//System.out.println("\tPurity:\t" + purity[clusterIndex]);
 			clusterIndex++;
 		}
 		
-		System.out.println("\nTotal Purity:\t" + totalPurity);
+		System.out.println("Total Purity:\t" + totalPurity);
 				
 		return;
 	}
