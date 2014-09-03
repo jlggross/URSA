@@ -3,6 +3,7 @@ package clusteringstrategies.implementation.clustering;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import clusteringstrategies.core.ClusteringStrategy;
 import datastructures.core.DataCluster;
@@ -30,6 +31,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	private int centroidsNum;
 	private int iterations;
 	private int centroidStrategy;
+	private int firstCentroids;
 	private double MIN_VALUE = -9999.00;
 	private int INFINITE = 9999;
 	
@@ -43,8 +45,10 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	 * convergence, with no concern on the number of iterations.
 	 * @param centroidStrategy : select the strategy to choose the new centroid at the end of each
 	 * iteration.
+	 * @param firstCentroids : must be 0, 1 or 2. Each number corresponds to a different strategy to
+	 * find the first k centroids.
 	 */
-	public KmedoidsClusteringStrategy(int k, int iterations, int centroidStrategy) {
+	public KmedoidsClusteringStrategy(int k, int iterations, int centroidStrategy, int firstCentroids) {
 		this.centroidsNum = k;
 		this.iterations = iterations;
 		
@@ -52,6 +56,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 			throw new RuntimeException("K-means: centroidStrategy must be 1 or 2.");
 		
 		this.centroidStrategy = centroidStrategy;
+		this.firstCentroids = firstCentroids;
 	}
 	
 	
@@ -72,12 +77,37 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		List<Integer> centroidsIndex = new ArrayList<Integer>(); // stores the position of each centroid in 'dataObjects' as file OBJ0, OBJ1, ...
 		
-		// Choose centroids
-		centroidsIndex = this.chooseCentroidsSPSS(this.centroidsNum, centroidsIndex, similarityMatrix);
+		// Choose firt k centroids
+		switch(this.firstCentroids) {
+			case 0: // Uses SSPS algorithm - problems with y
+				centroidsIndex = this.chooseCentroidsSPSS(this.centroidsNum, centroidsIndex, similarityMatrix);
+				break;
+			case 1: // Sequential centroid selection
+				for (int i = 0; i < this.centroidsNum; i++)
+					centroidsIndex.add(i);
+				break;
+			case 2: // Random centroid selection
+				Random rand = new Random(); 
+				do {
+					int a = Math.abs(rand.nextInt() % dataObjects.size());
+					if (!centroidsIndex.contains(a)) {
+						centroidsIndex.add(a);
+						System.out.println("index : " + a);
+					}
+				} while (centroidsIndex.size() < this.centroidsNum);
+				break;
+			default:
+				throw new RuntimeException("Kmedoids : choose option 0, 1 or 2.");
+		}
+		/*
+		
+		*/
+			
 		for (int i = 0; i < centroidsIndex.size(); i++) {
 			// Add new cluster
 			DataCluster cluster = new DataCluster("Cluster" + i);
 			cluster.addDataObject(dataObjects.get(centroidsIndex.get(i)));
+			//cluster.addDataObject(dataObjects.get(i));
 			dataClusters.add(cluster);
 		}
 		
@@ -87,6 +117,9 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 			numIterations = INFINITE;
 		else 
 			numIterations = this.iterations;
+		
+		// Testing variable
+		List<Integer> oldCentroids = null;
 		
 		// K-means core execution
 		for (int it = 0; it < numIterations; it++) {
@@ -133,9 +166,28 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 			if (it == (this.iterations - 1))
 				break; 
 			
+			// Check if the centroids are still the same. If yes, then stop, because 
+			// no changes occurred in two iterations.
+			boolean stop = true;
+			if (it == 0) { // First iteration
+				stop = false;
+			}
+			else { // From the second iteration and on
+				for (int c : centroidsIndex) {
+					if (oldCentroids.contains(c))
+						continue;
+					else {
+						stop = false;
+						break;
+					}
+				}
+			}
+			if (stop)
+				break;
+			
 			// Calculate new centroids. So first, clear the current centroids
 			List<DataCluster> oldClusters = new ArrayList<DataCluster>(dataClusters);
-			List<Integer> oldCentroids = new ArrayList<Integer>(centroidsIndex);
+			oldCentroids = new ArrayList<Integer>(centroidsIndex);
 			dataClusters.clear();
 			centroidsIndex.clear();
 			
@@ -167,25 +219,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 				dataClusters.add(cluster);
 			}
 			
-			// Check if the centroids are still the same. If yes, then stop, because 
-			// no changes occurred in two iterations.
-			boolean stop = true;
-			if (it == 0) { // First iteration
-				stop = false;
-				continue;
-			}
-			else { // From the second iteration and on
-				for (int c : centroidsIndex) {
-					if (oldCentroids.contains(c))
-						continue;
-					else {
-						stop = false;
-						break;
-					}
-				}
-			}
-			if (stop)
-				break;
+			
 			
 			// Check @param iterations
 			if (this.iterations == -1)
@@ -255,15 +289,18 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	        Collections.sort(similarityDistances, new Pair.PairSimilarityComparator());
 	        
 			double y = 0;
-			for (int i = 0; i < (size/k); i++)
-				y += similarityDistances.get(i).getSimilarity();
+			y = similarityDistances.get(0).getSimilarity();
+			
+			//for (int i = 0; i < (size/k); i++)
+				//y += similarityDistances.get(i).getSimilarity();
 			
 			// 7-8. Find next centroid
 			for (int i = 2; i < similarityDistances.size(); i++) {
 				double leftSum = 0, rightSum = 0;
 				for (int j = 0; j < (i+1); j++) {
-					if (j < i)
+					if (j < i) {
 						leftSum += Math.pow(similarityDistances.get(j).getSimilarity(), 2);
+					}
 					if (j == i) {
 						rightSum = leftSum;
 						leftSum += Math.pow(similarityDistances.get(j).getSimilarity(), 2);

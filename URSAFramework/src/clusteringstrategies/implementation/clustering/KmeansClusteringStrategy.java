@@ -204,6 +204,8 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 		
 		List<DataCluster> dataClusters = new ArrayList<DataCluster>();
 		for (int i = 0; i < this.numCentroids; i++) {
+			if (clusters[i].getDataObjects().size() == 0)
+				continue;
 			dataClusters.add(clusters[i]);
 		}
 		
@@ -298,12 +300,13 @@ public class KmeansClusteringStrategy extends ClusteringStrategy {
 					}
 				}
 				if (leftSum >= y && y > rightSum) {
-					centroidsIndex.add(
-							similarityDistances.get(i).getIndex());
+					centroidsIndex.add(similarityDistances.get(i).getIndex());
 					break;
 				}
 				if (i == (similarityDistances.size() - 1)) {
-					throw new RuntimeException("Kmeans class, function chooseCentroidsSPSS : No centroid was selected");
+					centroidsIndex.add(similarityDistances.get(i).getIndex());
+					break;
+					//throw new RuntimeException("Kmeans class, function chooseCentroidsSPSS : No centroid was selected");
 				}
 			}
 		} while (centroidsIndex.size() < k);
