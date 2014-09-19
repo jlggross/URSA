@@ -49,8 +49,8 @@ public class MyAnalysisStrategy extends AnalysisStrategy {
 	 * @param similarityMatrix : similarity matrix calculated by a similarity algorithm.
 	 */
 	@Override
-	public double executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
+	public void executeAnalysis(List<DataObject> dataObjects, List<DataCluster> dataClusters, Matrix2D similarityMatrix) {
 		// TODO
-		return 0;
+		return;
 	}
 }

@@ -19,7 +19,7 @@ public class ConsoleObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		ClusteringProcess process = (ClusteringProcess) o;
-		//System.out.println(String.format("Completed steps: %d/%d", process.getProcessedSteps(), process.getTotalSteps()));
+		System.out.println(String.format("Completed steps: %d/%d", process.getProcessedSteps(), process.getTotalSteps()));
 		switch (process.getProcessedSteps()) {
 			case 0:
 				break;

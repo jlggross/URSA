@@ -1,0 +1,40 @@
+Prometheus (moon)
+From Wikipedia, the free encyclopedia
+Not to be confused with the asteroid 1809 Prometheus.
+Prometheus
+
+Prometheus image from Cassini (December 26, 2009)
+Discovery
+Discovered by	Collins, Voyager 1
+Discovery date	October, 1980
+Orbital characteristics?
+Epoch 31 December 2003 (JD 2453005.5)
+Semi-major axis	139,380 ± 10 km
+Eccentricity	0.0022
+Orbital period	0.612990038 d
+Inclination	0.008 ± 0.004° to Saturn's equator
+Satellite of	Saturn
+Physical characteristics
+Dimensions	135.6×79.4×59.4 km?
+Mean radius	43.1 ± 2.7 km?
+Volume	~340,000 km³?
+Mass	1.595 ± 0.015 ×1017 kg?
+Mean density	0.48 ± 0.09 g/cm³?
+Equatorial surface gravity	0.0013–0.0058 m/s²?
+Escape velocity	~0.019 km/s
+Rotation period	synchronous
+Axial tilt	zero
+Albedo	0.6
+Temperature	~74 K
+Prometheus is an inner satellite of Saturn. It was discovered in 1980 (some time before October 25) from photos taken by the Voyager 1 probe, and was provisionally designated S/1980 S 27.
+In late 1985 it was officially named after Prometheus, a Titan in Greek mythology. It is also designated Saturn XVI (16). Pronunciation for Prometheus is  /pr?'mi??i?s/, US dict: pro·me'·the·?s; Greek: ???µ??e??.
+This small moon is extremely elongated, measuring about 136 by 79 by 59 km. It has several ridges and valleys and a number of impact craters of about 20 km diameter are visible, but it is less cratered than nearby Pandora, Epimetheus and Janus. From its very low density and relatively high albedo, it seems likely that Prometheus is a very porous icy body. There is a lot of uncertainty in these values, however, and so this remains to be confirmed.
+Contents   
+1 Interactions with F Ring and other moons
+2 Selected images
+3 Animations
+4 References
+5 External links
+Interactions with F Ring and other moons
+
+Prometheus acts as a shepherd satellite for the inner edge of Saturn's F Ring. Recent images from the Cassini probe show that the Promethean gravitational field creates kinks and knots in the F Ring as the moon 'steals' material from it. The orbit of Prometheus appears to be chaotic, as a consequence of a series of four 121:118 mean motion resonances with Pandora. The most appreciable changes in their orbits occur approximately every 6.2 years, when the periapsis of Pandora lines up with the apoapsis of Prometheus and the moons approach to within about 1400 km. Prometheus is itself a significant perturber of Atlas, with which it is in a 53:54 mean longitude resonance.

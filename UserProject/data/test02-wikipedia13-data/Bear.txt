@@ -1,0 +1,233 @@
+Scientific classification
+Kingdom:	Animalia
+Phylum:	Chordata
+Class:	Mammalia
+Order:	Carnivora
+Suborder:	Caniformia
+Family:	Ursidae
+G. Fischer de Waldheim, 1817
+Genera
+Ailuropoda
+Helarctos
+Melursus
+Ursus
+Tremarctos
+Agriarctos †
+Agriotherium †
+Amphicticeps †
+Amphicynodon †
+Arctotherium †
+Arctodus †
+Indarctos †
+Kolponomos †
+Parictis †
+Plionarctos †
+Ursavus †
+Bears are mammals of the family Ursidae. Bears are classified as caniforms, or doglike carnivorans, with the pinnipeds being their closest living relatives. Although only eight species of bears are extant, they are widespread, appearing in a wide variety of habitats throughout the Northern Hemisphere and partially in the Southern Hemisphere. Bears are found on the continents of North America, South America, Europe, and Asia.
+
+Common characteristics of modern bears include large bodies with stocky legs, long snouts, shaggy hair, plantigrade paws with five nonretractile claws, and short tails. While the polar bear is mostly carnivorous, and the giant panda feeds almost entirely on bamboo, the remaining six species are omnivorous with varied diets.
+
+With the exception of courting individuals and mothers with their young, bears are typically solitary animals. They are generally diurnal, but may be active during the night (nocturnal) or twilight (crepuscular), particularly around humans. Bears possess an excellent sense of smell and, despite their heavy build and awkward gait, are adept runners, climbers, and swimmers. In autumn, some bear species forage large amounts of fermented fruits, which affects their behaviour.[1] Bears use shelters, such as caves and burrows, as their dens; most species occupy their dens during the winter for a long period (up to 100 days) of sleep similar to hibernation.[2]
+
+Bears have been hunted since prehistoric times for their meat and fur. With their tremendous physical presence and charisma, they play a prominent role in the arts, mythology, and other cultural aspects of various human societies. In modern times, the bears' existence has been pressured through the encroachment on their habitats and the illegal trade of bears and bear parts, including the Asian bile bear market. The IUCN lists six bear species as vulnerable or endangered, and even least concern species, such as the brown bear, are at risk of extirpation in certain countries. The poaching and international trade of these most threatened populations are prohibited, but still ongoing.
+
+Etymology
+The English word "bear" comes from Old English bera and belongs to a family of names for the bear in Germanic languages that originate from an adjective meaning "brown".[3] In Scandinavia, the word for bear is björn (or bjørn), and is a relatively common given name for males. The use of this name is ancient and has been found mentioned in several runestone inscriptions.[4]
+
+The reconstructed Proto-Indo-European name of the bear is *h₂ŕ̥tḱos, whence Sanskrit r̥kṣa, Avestan arša, Greek ἄρκτος (arktos), Latin ursus, Welsh arth (whence perhaps "Arthur"), Albanian ari, Armenian արջ (arj). Also compared is Hittite ḫartagga-, the name of a monster or predator.[3] In the binomial name of the brown bear, Ursus arctos, Linnaeus simply combined the Latin and Greek names.
+
+The Proto-Indo-European (PIE) word for bear, *h₂ŕ̥tḱos seems to have been subject to taboo deformation or replacement in some languages (as was the word for wolf, wlkwos), resulting in the use of numerous unrelated words with meanings like "brown one" (English bruin) and "honey-eater" (Slavic medved).[5] Thus, some Indo-European language groups do not share the same PIE root.
+
+"Bear" was originally a euphemism for the creature, and was said by superstitious peasants who believed saying the actual term for "bear" would summon it. Because peasants avoided saying the original name, it has been lost to history and "bear" has replaced it.[6][unreliable source?]
+
+Evolutionary history
+The family Ursidae is one of 9 families in the suborder Caniformia, or "doglike" carnivores, within the order Carnivora. Bears' closest living relatives are the pinnipeds, canids, and musteloids.[7]
+
+The following synapomorphic (derived) traits set bears apart from related families:[citation needed]
+
+presence of an alisphenoid canal
+paroccipital processes that are large and not fused to the auditory bullae
+auditory bullae are not enlarged
+lacrimal bone is vestigial
+cheek teeth are bunodont and hence indicative of a broad, hypocarnivorous (not strictly meat-eating) diet (although hypercarnivorous (strictly meat-eating) taxa are known from the fossil record)[8]
+carnassials are flattened
+Additionally, members of this family possess posteriorly oriented M2 postprotocrista molars, elongated m2 molars, and a reduction of the premolars.
+
+Modern bears comprise eight species in three subfamilies: Ailuropodinae (monotypic with the giant panda), Tremarctinae (monotypic with the spectacled bear), and Ursinae (containing six species divided into one to three genera, depending upon authority).
+
+Fossil bears
+The earliest members of Ursidae belong to the extinct subfamily Amphicynodontinae, including Parictis (late Eocene to early middle Miocene, 38–18 Mya) and the slightly younger Allocyon (early Oligocene, 34–30 Mya), both from North America. These animals looked very different from today's bears, being small and raccoon-like in overall appearance, and diets perhaps more similar to that of a badger. Parictis does not appear in Eurasia and Africa until the Miocene.[9] It is unclear whether late-Eocene ursids were also present in Eurasia, although faunal exchange across the Bering land bridge may have been possible during a major sea level low stand as early as the late Eocene (about 37 Mya) and continuing into the early Oligocene.[10] European genera morphologically are very similar to Allocyon, and also the much younger American Kolponomos (about 18 Mya), are known from the Oligocene, including Amphicticeps and Amphicynodon.
+
+
+
+Plithocyon armagnacensis skull
+The raccoon-sized, dog-like Cephalogale is the oldest-known member of the subfamily Hemicyoninae, which first appeared during the middle Oligocene in Eurasia about 30 Mya ago. The subfamily also includes the younger genera Phoberocyon (20–15 Mya), and Plithocyon (15–7 Mya).
+
+A Cephalogale-like species gave rise to the genus Ursavus during the early Oligocene (30–28 Mya); this genus proliferated into many species in Asia and is ancestral to all living bears. Species of Ursavus subsequently entered North America, together with Amphicynodon and Cephalogale, during the early Miocene (21–18 Mya).
+
+Members of the living lineages of bears diverged from Ursavus around 20 Mya ago, likely via the species Ursavus elmensis. Based on genetic and morphological data, the Ailuropodinae (pandas) were the first to diverge from other living bears about 19 Mya ago, although no fossils of this group have been found before about 5 Mya.[11]
+
+The New World short-faced bears (Tremarctinae) differentiated from Ursinae following a dispersal event into North America during the mid Miocene (about 13 Mya).[11] They invaded South America (~1 Ma) following formation of the Isthmus of Panama.[12] Their earliest fossil representative is Plionarctos in North America (~ 10–2 Ma). This genus is probably the direct ancestor to the North American short-faced bears (genus Arctodus), the South American short-faced bears (Arctotherium), and the spectacled bears, Tremarctos, represented by both an extinct North American species (T. floridanus), and the lone surviving representative of the Tremarctinae, the South American spectacled bear (T. ornatus).
+
+
+
+Fossil of cave bear (Ursus spelaeus)
+The subfamily Ursinae experienced a dramatic proliferation of taxa about 5.3–4.5 Mya ago coincident with major environmental changes, with the first members of the genus Ursus also appearing around this time.[11] The sloth bear is a modern survivor of one of the earliest lineages to diverge during this radiation event (5.3 Mya); it took on its peculiar morphology, related to its diet of termites and ants, no later than by the early Pleistocene. By 3–4 Mya ago, the species Ursus minimus appears in the fossil record of Europe; apart from its size, it was nearly identical to today's Asiatic black bear. It is likely ancestral to all bears within Ursinae, perhaps aside from the sloth bear. Two lineages evolved from U. minimus: the black bears (including the sun bear, the Asiatic black bear, and the American black bear); and the brown bears (which includes the polar bear). Modern brown bears evolved from U. minimus via Ursus etruscus, which itself is ancestral to both the extinct Pleistocene cave bear and today's brown and polar bears. Species of Ursinae have migrated repeatedly into North America from Eurasia as early as 4 Mya during the early Pliocene.[13]
+
+The fossil record of bears is exceptionally good. Direct ancestor-descendent relationships between individual species are often fairly well established, with sufficient intermediate forms known to make the precise cut-off between an ancestral and its daughter species subjective.[14]
+
+Other extinct bear genera include Agriarctos, Indarctos, and Agriotherium (sometimes placed within hemicyonids).
+
+Taxonomic revisions of living bear species
+The giant panda's taxonomy (subfamily Ailuropodinae) has long been debated. Its original classification by Armand David in 1869 was within the bear genus Ursus, but in 1870, it was reclassified by Alphonse Milne-Edwards to the raccoon family.[15] In recent studies, the majority of DNA analyses suggest the giant panda has a much closer relationship to other bears and should be considered a member of the family Ursidae.[16] Estimates of divergence dates place the giant panda as the most ancient offshoot among living taxa within Ursidae, having split from other bears 17.9 to 22.1 Mya.[11] The red panda was included within Ursidae in the past. However, more recent research does not support such a conclusion, and instead places it in its own family Ailuridae, in superfamily Musteloidea along with Mustelidae, Procyonidae, and Mephitidae.[17][18][19] Multiple similarities between the two pandas, including the presence of false thumbs, are thus thought to represent an example of convergent evolution for feeding primarily on bamboo.
+
+Unlike their neighbors elsewhere, the brown bears of Alaska's ABC Islands evidently are more closely related to polar bears than to other brown bears in the world. Researchers Gerald Shields and Sandra Talbot of the University of Alaska Fairbanks Institute of Arctic Biology studied the DNA of several samples of the species and found their DNA is different from that of other brown bears. The discovery has shown, while all other brown bears share a brown bear as their closest relative, those of Alaska's ABC Islands differ and share their closest relation with the polar bear.[20] Also, the very rare Tibetan blue bear is a type of brown bear. This animal has never been photographed.[citation needed]
+
+Koalas are often referred to as bears due to their appearance; they are not bears, however, but are marsupials.
+
+Classification
+
+
+Brown bear (Ursus arctos) at the Moscow Zoo
+(Living species in bold.)
+
+
+
+Asian black bear Ursus thibetanus, at the Wrocław Zoo, Poland
+
+
+Sun bear (Helarctos malayanus) at the Zoo Basel in Switzerland
+
+
+Giant panda (Ailuropoda melanoleuca) at the Smithsonian National Zoological Park, Washington DC
+
+
+Spectacled bear (Tremarctos ornatus) at the Houston Zoo
+
+
+Indian Sloth bear (Melursus ursinus ursinus) at the National Zoological Park
+
+
+Polar bear (Ursus maritimus) at the Rio Grande Zoo, Albuquerque, New Mexico
+
+
+American black bear (Ursus americanus) at the Cincinnati Zoo.
+Family Ursidae
+Subfamily Ailuropodinae
+† Ailurarctos
+† Ailurarctos lufengensis
+† Ailurarctos yuanmouenensis
+Ailuropoda (pandas)
+† Ailuropoda baconi
+† Ailuropoda fovealis
+Ailuropoda melanoleuca, giant panda
+Ailuropoda melanoleuca melanoleuca, giant panda
+Ailuropoda melanoleuca qinlingensis, Qinling panda
+† Ailuropoda microta
+† Ailuropoda wulingshanensis
+Subfamily Tremarctinae
+Tremarctos (Spectacled bears)
+Tremarctos ornatus, spectacled bear
+† Tremarctos floridanus
+† Arctodus
+† Arctodus simus
+† Arctodus pristinus
+† Arctotherium
+† Arctotherium angustidens
+† Arctotherium bonariense
+† Arctotherium brasilense
+† Arctotherium latidens
+† Arctotherium tarijense
+† Arctotherium vetustum
+† Arctotherium wingei
+† Plionarctos
+† Plionarctos edensis
+† Plionarctos harroldorum
+Subfamily Ursinae
+† Agriotherium
+† Agriotherium inexpetans
+† Agriotherium schneideri
+† Agriotherium sivalensis
+Helarctos
+Helarctos malayanus, sun bear
+Helarctos malayanus malayanus
+Helarctos malayanus euryspilus, Borneo sun bear
+† Indarctos
+† Indarctos anthraciti
+† Indarctos arctoides
+† Indarctos atticus
+† Indarctos nevadensis
+† Indarctos oregonensis
+† Indarctos salmontanus
+† Indarctos vireti
+† Indarctos zdanskyi
+Melursus
+Melursus ursinus, sloth bear
+Melursus ursinus inornatus, Sri Lankan sloth bear
+Melursus ursinus ursinus, Indian sloth bear
+† Ursavus
+† Ursavus brevirhinus
+† Ursavus depereti
+† Ursavus elmensis
+† Ursavus pawniensis
+† Ursavus primaevus
+Ursus
+† Ursus abstrusus
+Ursus americanus, American black bear
+Ursus americanus altifrontalis, Olympic black bear
+Ursus americanus amblyceps, New Mexico black bear
+Ursus americanus americanus, Eastern black bear
+Ursus americanus californiensis, California black bear
+Ursus americanus carlottae, Haida Gwaii black bear or Queen Charlotte black bear
+Ursus americanus cinnamomum, cinnamon bear
+Ursus americanus emmonsii, Glacier bear
+Ursus americanus eremicus, Mexican black bear
+Ursus americanus floridanus, Florida black bear
+Ursus americanus hamiltoni, Newfoundland black bear
+Ursus americanus kermodei, Kermode bear or spirit bear
+Ursus americanus luteolus, Louisiana black bear
+Ursus americanus machetes, West Mexico black bear
+Ursus americanus perniger, Kenai black bear
+Ursus americanus pugnax, Dall black bear
+Ursus americanus vancouveri, Vancouver Island black bear
+Ursus arctos, brown bear
+Ursus arctos arctos, Eurasian brown bear
+Ursus arctos alascensis
+Ursus arctos beringianus, Kamchatka brown bear or Far Eastern brown bear
+† Ursus arctos californicus, California golden bear
+† Ursus arctos crowtheri, Atlas bear
+† Ursus arctos dalli
+Ursus arctos gobiensis, Gobi bear (very rare)
+Ursus arctos horribilis, grizzly bear
+Ursus arctos isabellinus, Himalayan brown bear or Himalayan red bear
+Ursus arctos lasiotus, Ussuri brown bear or black grizzly
+Ursus arctos middendorffi, Kodiak bear
+† Ursus arctos nelsoni, Mexican grizzly bear
+Ursus arctos piscator, Bergman's bear (extinct?)
+Ursus arctos pruinosus, Tibetan blue bear, Tibetan bear, or Himalayan blue bear
+Ursus arctos sitkensis
+Ursus arctos syriacus Syrian (brown) bear
+† Ursus deningeri
+† Ursus etruscus
+† Ursus inopinatus, MacFarlane's bear (cryptid; if an authentic species, extinct)
+† Ursus minimus
+Ursus maritimus, polar bear
+Ursus maritimus maritimus
+† Ursus maritimus tyrannus
+† Ursus rossicus
+† Ursus sackdillingensis
+† Ursus spelaeus, cave bear
+Ursus thibetanus, Asian black bear
+Ursus thibetanus formosanus, Formosan black bear
+Ursus thibetanus gedrosianus
+Ursus thibetanus japonicus
+Ursus thibetanus laniger
+Ursus thibetanus mupinensis
+Ursus thibetanus thibetanus
+Ursus thibetanus ussuricus
+† Kolponomos
+† Kolponomos clallamensis
+† Kolponomos newportensis
+The genera Melursus and Helarctos are sometimes also included in Ursus. The Asiatic black bear and the polar bear used to be placed in their own genera, Selenarctos and Thalarctos; these names have since been reduced in rank to subgeneric rank.
+
+A number of hybrids have been bred between American black, brown, and polar bears.
