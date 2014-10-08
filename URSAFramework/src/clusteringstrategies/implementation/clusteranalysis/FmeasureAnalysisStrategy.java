@@ -7,7 +7,9 @@ import utility.clusteranalysis.ClusterAnalysisUtility;
 import clusteringstrategies.core.AnalysisStrategy;
 import datastructures.core.DataCluster;
 import datastructures.core.DataObject;
+import datastructures.implementations.datatypes.AudioMediaFile;
 import datastructures.implementations.datatypes.TextFile;
+import datastructures.implementations.datatypes.VideoMediaFile;
 
 /* ---------------------------------------------------------------------------------
  * 
@@ -58,18 +60,21 @@ import datastructures.implementations.datatypes.TextFile;
 
 public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 
-	List<List<String>> dataClasses;
+	private List<List<String>> dataClasses;
+	private String datatype;
 		
 	/**
 	 * Definition: F-Measure Analysis Constructor
 	 * 
 	 * @param filename : refers to a file with the expected classes. These classes
 	 * are a reference for the clusters that the clustering algorithm must return. 
+	 * @param datatype : identifies the data type. Must be "text", "audio" or "video". 
 	 */
-	public FmeasureAnalysisStrategy(String filename) {
+	public FmeasureAnalysisStrategy(String filename, String datatype) {
 		// Initialize the data classes
 		this.dataClasses = new ArrayList<List<String>>();
 		this.dataClasses = ClusterAnalysisUtility.loadDataClasses(filename);
+		this.datatype = datatype;
 	}
 	
 	
@@ -89,9 +94,21 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 			List<String> newCluster = new ArrayList<String>();
 			int size = c.getDataObjects().size();
 			for (int i = 0; i < size; i++) {
-				TextFile doc = new TextFile("doc", "", 0);
-				doc = (TextFile) c.getObject(i);
-				newCluster.add(doc.getTitle());
+				
+				if (this.datatype.equals("text")) {
+					TextFile doc = new TextFile("doc", "", 0);
+					doc = (TextFile) c.getObject(i);
+					newCluster.add(doc.getTitle());
+				} else if (this.datatype.equals("audio")) {
+					AudioMediaFile doc = new AudioMediaFile("doc", "", 0);
+					doc = (AudioMediaFile) c.getObject(i);
+					newCluster.add(doc.getTitle());
+				} else if (this.datatype.equals("video")) {
+					VideoMediaFile doc = new VideoMediaFile("doc", "", 0);
+					doc = (VideoMediaFile) c.getObject(i);
+					newCluster.add(doc.getTitle());
+				}
+				
 			}
 			clusters.add(newCluster);
 		}
@@ -143,9 +160,15 @@ public class FmeasureAnalysisStrategy extends AnalysisStrategy {
 			fm += fmeasure[i]; 
 		}
 		
+		/*
 		System.out.println("Means Precision:\t" + p / clusterIndex);
 		System.out.println("Means Recall:\t" + r / clusterIndex);
 		System.out.println("Means Fmeasure:\t" + fm / clusterIndex);
+		*/
+		
+		System.out.print(p / clusterIndex);
+		System.out.print("\t" + r / clusterIndex);
+		System.out.print("\t" + fm / clusterIndex);
 		
 		return;
 	}

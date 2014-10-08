@@ -46,7 +46,7 @@ public class KmedoidsClusteringStrategy extends ClusteringStrategy {
 	 * @param centroidStrategy : select the strategy to choose the new centroid at the end of each
 	 * iteration.
 	 * @param firstCentroids : must be 0, 1 or 2. Each number corresponds to a different strategy to
-	 * find the first k centroids.
+	 * find the first k centroids. 0 -> SSPS; 1 -> Sequential; 2 -> Random
 	 */
 	public KmedoidsClusteringStrategy(int k, int iterations, int centroidStrategy, int firstCentroids) {
 		this.centroidsNum = k;

@@ -20,6 +20,10 @@ import datastructures.implementations.datatypes.AudioMediaFile;
 
 public class AudioFileSimilarityStrategy extends SimilarityStrategy {
 
+	private int artistWeight = 3;
+	private int albumWeight = 2;
+	private int genreWeight = 1;
+	
 	/**
 	 * Definition: AudioFile Similarity core algorithm.
 	 * 
@@ -60,10 +64,34 @@ public class AudioFileSimilarityStrategy extends SimilarityStrategy {
 							similarValues++;
 					}
 					
-					else if (audio1MetaData.getId().equals("album") || 
-						audio1MetaData.getId().equals("artist") ||
-						audio1MetaData.getId().equals("genre") ||
-						audio1MetaData.getId().equals("title")) {
+					else if (audio1MetaData.getId().equals("album")) {
+						String a1 = audio1MetaData.getValue();
+						String a2 = audio2MetaData.getValue();
+						if (a1.equals(a2)) {
+							similarValues++;
+							similarValues += this.albumWeight;
+						}
+					} 
+					
+					else if (audio1MetaData.getId().equals("artist")) {
+						String a1 = audio1MetaData.getValue();
+						String a2 = audio2MetaData.getValue();
+						if (a1.equals(a2)) {
+							similarValues++;
+							similarValues += this.artistWeight;
+						}
+					} 
+					
+					else if (audio1MetaData.getId().equals("genre")) {
+						String a1 = audio1MetaData.getValue();
+						String a2 = audio2MetaData.getValue();
+						if (a1.equals(a2)) {
+							similarValues++;
+							similarValues += this.genreWeight;
+						}
+					} 
+					
+					else if (audio1MetaData.getId().equals("title")) {
 						String a1 = audio1MetaData.getValue();
 						String a2 = audio2MetaData.getValue();
 						
@@ -83,7 +111,7 @@ public class AudioFileSimilarityStrategy extends SimilarityStrategy {
 				}
 				
 				// Calculate the similarity.
-				double result = (double) similarValues / featureListSize;
+				double result = (double) similarValues / (featureListSize + this.albumWeight + this.artistWeight + this.genreWeight);
 				similarityMatrix.set(i, j, result);
 			}
 			

@@ -101,8 +101,9 @@ public class BestStarClusteringStrategy extends ClusteringStrategy {
 				continue;
 			
 			int index = -1;
-			double max = Double.MIN_VALUE;
-			double sim;
+			double max = -1;
+			double sim = 0;
+			
 			for(int j = 0; j < numClusters; j++) {
 				DataObject d = clusters[j].getObject(0);
 				sim = similarityMatrix.get(d.getIndex(), i);

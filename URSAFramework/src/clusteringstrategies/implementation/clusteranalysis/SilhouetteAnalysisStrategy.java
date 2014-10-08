@@ -71,7 +71,8 @@ public class SilhouetteAnalysisStrategy extends AnalysisStrategy {
 		}
 		
 		silhouette /= dataClusters.size();		
-		System.out.println("Total Silhouette: " + silhouette);
+		//System.out.println("Total Silhouette: " + silhouette);
+		System.out.print("\t" + silhouette);
 		
 		return;
 	}

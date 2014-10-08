@@ -123,7 +123,7 @@ public class AudioMetaDataSelectionStrategy extends FeatureSelectionStrategy {
 	    			d = value.split("-");
 	    		
 	    		audioFile.setDate(Integer.parseInt(d[0]));
-		    	System.out.printf("date: %s\n", d[0]);
+		    	//System.out.printf("date: %s\n", d[0]);
 	    	}
 	    	
 	    }
